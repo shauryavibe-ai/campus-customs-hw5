@@ -598,3 +598,13 @@ This log entry is local only until the next push.
 > AI_prompts.md as well
 
 **Response:** `AI_prompts.md` was already in the repo. Committed and pushed it again so the GitHub copy includes this latest prompt, then confirmed GitHub's copy matches the local file.
+
+## Prompt 5
+> Give me the repo URL
+
+**Response:** https://github.com/shauryavibe-ai/campus-customs-hw5
+
+## Prompt 6
+> And also put this link in output/github_url.txt
+
+**Response:** Wrote the repo URL to `outputs/github_url.txt` (the existing `outputs/` folder) and pushed it to GitHub, together with the prompt-log entries for Prompts 5–6.
