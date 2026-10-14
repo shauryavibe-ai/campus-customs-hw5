@@ -573,3 +573,9 @@ Updated in the Reflection tab and `outputs/reflection.md`.
 
 ## Prompt 1
 > Problem 11: Now push the code a public github repository from my git details which you already have
+
+**Response:** Published the project to a new **public** GitHub repository: https://github.com/shauryavibe-ai/campus-customs-hw5 (account `shauryavibe-ai`, commit email shaurya.srivastava@yale.edu, branch `main`).
+- **Choices (asked first):** repo name `campus-customs-hw5`, to match `campus-customs-hw4`. Publish code, docs and outputs, including the original and working databases the app needs, and leave out scratch copies.
+- **Added:** a `.gitignore` (excludes `.venv/`, `node_modules/`, `frontend/dist/`, caches, any `.env`, `data/runs/`, `data/backups/`, the original data zip) and a top-level `README.md` (what it is, the folders, how to run it, safety in brief).
+- **Checked before pushing:** the API key appears in none of the 91 committed files (the key lives in the parent folder's `.env`, outside the repo).
+- **Pushed:** one commit, `4780c85`.
