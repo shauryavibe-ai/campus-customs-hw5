@@ -1,0 +1,15 @@
+# Config (loads PORTKEY_API_KEY from the root .env)
+python-dotenv>=1.0.1
+# AI calls (OpenAI SDK via Portkey, model gpt-6-luna)
+openai>=1.40.0
+# MCP server shared by the agents (Problem 3)
+fastmcp>=4.1.0
+# Agent team (Problem 5): Pydantic AI agents on gpt-6-luna via Portkey, tools over MCP
+pydantic-ai-slim[openai]>=2.55.0
+# Backend (Problem 7)
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+httpx>=0.27.0
+# Tests
+pytest>=8.0.0
+pytest-asyncio>=0.23.0

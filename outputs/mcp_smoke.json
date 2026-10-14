@@ -1,0 +1,555 @@
+{
+  "tests": {
+    "inventory-shortfalls": {
+      "run_at": "2026-10-13T20:34:47+00:00",
+      "server": {
+        "name": "campus-inventory",
+        "config_file": "mcp.json",
+        "transport": "stdio",
+        "command": [
+          "python",
+          "-m",
+          "mcp_server",
+          "--agent",
+          "inventory"
+        ],
+        "tools_exposed": [
+          "check_stock",
+          "create_ticket",
+          "find_restock_vendor",
+          "find_shortfalls",
+          "get_ticket",
+          "list_approvals",
+          "receive_purchase_order"
+        ]
+      },
+      "database": "data/campus_customs_new.db (read-only test)",
+      "calls": [
+        {
+          "tool": "find_shortfalls",
+          "arguments": {},
+          "is_error": false,
+          "elapsed_ms": 25,
+          "result": {
+            "business_date": "2026-08-31",
+            "low_stock_threshold": 3,
+            "stock_issues": [
+              {
+                "sku": "CC-MUG-CREST",
+                "name": "Crest Mug",
+                "size": "OS",
+                "qty": 0,
+                "status": "out_of_stock",
+                "incoming": []
+              },
+              {
+                "sku": "CC-TEE-WHITE",
+                "name": "Classic Bulldog Tee",
+                "size": "S",
+                "qty": 0,
+                "status": "out_of_stock",
+                "incoming": [
+                  {
+                    "source": "vendor_invoice",
+                    "invoice_id": 501,
+                    "vendor": "Bulldog Print Co",
+                    "description": "Rush reprint CC-TEE-WHITE S",
+                    "invoice_status": "open",
+                    "invoice_due_date": "2026-08-28",
+                    "note": "Qty not recorded. Vendor lead time is 5 days; the reprint may be held until this invoice is paid."
+                  }
+                ]
+              },
+              {
+                "sku": "CC-TEE-WHITE",
+                "name": "Classic Bulldog Tee",
+                "size": "XL",
+                "qty": 2,
+                "status": "low_stock",
+                "incoming": []
+              },
+              {
+                "sku": "CC-TEE-WHITE",
+                "name": "Classic Bulldog Tee",
+                "size": "L",
+                "qty": 3,
+                "status": "low_stock",
+                "incoming": []
+              }
+            ],
+            "ticket_shortfalls": [
+              {
+                "ticket_id": 101,
+                "type": "customer_order",
+                "requester": "Tauhid Zaman",
+                "sku": "CC-TEE-WHITE",
+                "size": "S",
+                "qty_wanted": 1,
+                "on_hand": 0,
+                "short_by": 1,
+                "incoming": [
+                  {
+                    "source": "vendor_invoice",
+                    "invoice_id": 501,
+                    "vendor": "Bulldog Print Co",
+                    "description": "Rush reprint CC-TEE-WHITE S",
+                    "invoice_status": "open",
+                    "invoice_due_date": "2026-08-28",
+                    "note": "Qty not recorded. Vendor lead time is 5 days; the reprint may be held until this invoice is paid."
+                  }
+                ]
+              },
+              {
+                "ticket_id": 103,
+                "type": "price_override",
+                "requester": "Yale AI Club",
+                "sku": "CC-HOOD-NAVY",
+                "size": "M",
+                "qty_wanted": 20,
+                "on_hand": 8,
+                "short_by": 12,
+                "incoming": []
+              }
+            ]
+          }
+        }
+      ],
+      "checks": [
+        {
+          "check": "business date is the shop's date",
+          "pass": true
+        },
+        {
+          "check": "out-of-stock and low-stock sizes",
+          "pass": true
+        },
+        {
+          "check": "tickets short of stock: 101 short 1, 103 short 12",
+          "pass": true
+        },
+        {
+          "check": "tee S shows invoice 501 reprint as incoming",
+          "pass": true
+        },
+        {
+          "check": "working database unchanged",
+          "pass": true
+        }
+      ],
+      "passed": true
+    },
+    "accounting-purchase-order": {
+      "run_at": "2026-10-13T20:34:48+00:00",
+      "server": {
+        "name": "campus-accounting",
+        "config_file": "mcp.json",
+        "transport": "stdio",
+        "command": [
+          "python",
+          "-m",
+          "mcp_server",
+          "--agent",
+          "accounting"
+        ],
+        "tools_exposed": [
+          "check_margin",
+          "create_ticket",
+          "get_cash_position",
+          "get_ticket",
+          "list_approvals",
+          "list_invoices",
+          "prepare_invoice_payment",
+          "prepare_purchase_order",
+          "request_discount_approval"
+        ]
+      },
+      "database": "temporary copy of data/campus_customs_new.db (this test writes)",
+      "calls": [
+        {
+          "tool": "prepare_purchase_order",
+          "arguments": {
+            "vendor_id": 1,
+            "sku": "CC-HOOD-NAVY",
+            "size": "M",
+            "qty": 12,
+            "ticket_id": 103,
+            "reason": "Ticket 103: Yale AI Club wants 20 size-M hoodies, only 8 on hand. Restock the 12 short."
+          },
+          "is_error": false,
+          "elapsed_ms": 3,
+          "result": {
+            "purchase_order": {
+              "id": 1,
+              "vendor_id": 1,
+              "sku": "CC-HOOD-NAVY",
+              "size": "M",
+              "qty": 12,
+              "unit_cost": 22.0,
+              "total": 264.0,
+              "expected_date": "2026-09-05",
+              "ticket_id": 103,
+              "status": "pending_approval",
+              "reason": "Ticket 103: Yale AI Club wants 20 size-M hoodies, only 8 on hand. Restock the 12 short.",
+              "created_at": "2026-10-13T20:34:48+00:00"
+            },
+            "approval": {
+              "id": 1,
+              "kind": "purchase_order",
+              "ref_id": 1,
+              "amount": 264.0,
+              "summary": "Order 12 x CC-HOOD-NAVY size M from Bulldog Print Co for $264.00, arriving 2026-09-05",
+              "details": {
+                "purchase_order": {
+                  "id": 1,
+                  "vendor_id": 1,
+                  "sku": "CC-HOOD-NAVY",
+                  "size": "M",
+                  "qty": 12,
+                  "unit_cost": 22.0,
+                  "total": 264.0,
+                  "expected_date": "2026-09-05",
+                  "ticket_id": 103,
+                  "status": "pending_approval",
+                  "reason": "Ticket 103: Yale AI Club wants 20 size-M hoodies, only 8 on hand. Restock the 12 short.",
+                  "created_at": "2026-10-13T20:34:48+00:00"
+                },
+                "vendor": "Bulldog Print Co",
+                "reason": "Ticket 103: Yale AI Club wants 20 size-M hoodies, only 8 on hand. Restock the 12 short.",
+                "checking_balance": 3400.0,
+                "checking_after_pending_payments": 3400.0
+              },
+              "requested_by": "accounting",
+              "status": "pending",
+              "decided_by": null,
+              "decision_note": null,
+              "decided_at": null,
+              "created_at": "2026-10-13T20:34:48+00:00"
+            }
+          }
+        },
+        {
+          "tool": "prepare_purchase_order",
+          "arguments": {
+            "vendor_id": 2,
+            "sku": "CC-HOOD-NAVY",
+            "size": "M",
+            "qty": 12,
+            "ticket_id": 103,
+            "reason": "Wrong vendor on purpose"
+          },
+          "is_error": true,
+          "elapsed_ms": 2,
+          "result": {
+            "error": "Elm City Gifts doesn't supply CC-HOOD-NAVY. Suppliers: Bulldog Print Co."
+          }
+        },
+        {
+          "tool": "list_approvals",
+          "arguments": {},
+          "is_error": false,
+          "elapsed_ms": 2,
+          "result": {
+            "business_date": "2026-08-31",
+            "approvals": [
+              {
+                "id": 1,
+                "kind": "purchase_order",
+                "ref_id": 1,
+                "amount": 264.0,
+                "summary": "Order 12 x CC-HOOD-NAVY size M from Bulldog Print Co for $264.00, arriving 2026-09-05",
+                "details": {
+                  "purchase_order": {
+                    "id": 1,
+                    "vendor_id": 1,
+                    "sku": "CC-HOOD-NAVY",
+                    "size": "M",
+                    "qty": 12,
+                    "unit_cost": 22.0,
+                    "total": 264.0,
+                    "expected_date": "2026-09-05",
+                    "ticket_id": 103,
+                    "status": "pending_approval",
+                    "reason": "Ticket 103: Yale AI Club wants 20 size-M hoodies, only 8 on hand. Restock the 12 short.",
+                    "created_at": "2026-10-13T20:34:48+00:00"
+                  },
+                  "vendor": "Bulldog Print Co",
+                  "reason": "Ticket 103: Yale AI Club wants 20 size-M hoodies, only 8 on hand. Restock the 12 short.",
+                  "checking_balance": 3400.0,
+                  "checking_after_pending_payments": 3400.0
+                },
+                "requested_by": "accounting",
+                "status": "pending",
+                "decided_by": null,
+                "decision_note": null,
+                "decided_at": null,
+                "created_at": "2026-10-13T20:34:48+00:00"
+              }
+            ],
+            "pending_payment_total": 0.0
+          }
+        },
+        {
+          "tool": "get_cash_position",
+          "arguments": {},
+          "is_error": false,
+          "elapsed_ms": 2,
+          "result": {
+            "business_date": "2026-08-31",
+            "accounts": [
+              {
+                "name": "checking",
+                "balance": 3400.0,
+                "date": "2026-08-31"
+              }
+            ],
+            "checking_balance": 3400.0,
+            "open_invoices": [
+              {
+                "invoice_id": 501,
+                "vendor_id": 1,
+                "vendor": "Bulldog Print Co",
+                "amount": 840.0,
+                "still_owed": 840.0,
+                "due_date": "2026-08-28",
+                "status": "open",
+                "description": "Rush reprint CC-TEE-WHITE S",
+                "days_overdue": 3,
+                "days_until_due": 0,
+                "linked_tickets": [
+                  101
+                ],
+                "pending_approval_id": null
+              }
+            ],
+            "rent_due": [
+              {
+                "lease_id": 1,
+                "space_name": "Chapel Street shop",
+                "landlord": "Elm City Properties",
+                "amount": 2400.0,
+                "due_date": "2026-09-02",
+                "days_until_due": 2
+              }
+            ],
+            "totals": {
+              "open_invoices": 840.0,
+              "rent_due": 2400.0,
+              "purchase_orders_committed": 264.0,
+              "payments_waiting_for_approval": 0.0,
+              "all_obligations": 3504.0
+            },
+            "balance_after_pending_payments": 3400.0,
+            "balance_after_all_obligations": -104.0,
+            "can_cover_all": false
+          }
+        }
+      ],
+      "checks": [
+        {
+          "check": "purchase order created, waiting for a human",
+          "pass": true
+        },
+        {
+          "check": "12 hoodies (M) from Bulldog Print Co at $22 = $264, arriving 2026-09-05",
+          "pass": true
+        },
+        {
+          "check": "linked to ticket 103",
+          "pass": true
+        },
+        {
+          "check": "wrong vendor refused (Elm City Gifts doesn't make hoodies)",
+          "pass": true
+        },
+        {
+          "check": "the approval queue shows exactly this one request",
+          "pass": true
+        },
+        {
+          "check": "no money moved: checking still $3,400",
+          "pass": true
+        },
+        {
+          "check": "cash position counts the $264 as committed",
+          "pass": true
+        },
+        {
+          "check": "working database unchanged",
+          "pass": true
+        }
+      ],
+      "passed": true
+    },
+    "facilities-rent-payable": {
+      "run_at": "2026-10-13T20:34:48+00:00",
+      "server": {
+        "name": "campus-facilities",
+        "config_file": "mcp.json",
+        "transport": "stdio",
+        "command": [
+          "python",
+          "-m",
+          "mcp_server",
+          "--agent",
+          "facilities"
+        ],
+        "tools_exposed": [
+          "add_lease_note",
+          "check_rent_due",
+          "create_ticket",
+          "get_ticket",
+          "list_approvals",
+          "list_leases",
+          "prepare_rent_payment",
+          "verify_rent_notice"
+        ]
+      },
+      "database": "data/campus_customs_new.db (read-only test)",
+      "calls": [
+        {
+          "tool": "check_rent_due",
+          "arguments": {},
+          "is_error": false,
+          "elapsed_ms": 2,
+          "result": {
+            "business_date": "2026-08-31",
+            "within_days": 7,
+            "rent_due": [
+              {
+                "lease_id": 1,
+                "space_name": "Chapel Street shop",
+                "landlord": "Elm City Properties",
+                "monthly_rent": 2400.0,
+                "next_due": "2026-09-02",
+                "days_until_due": 2,
+                "rent_status": "due_soon",
+                "notes": null,
+                "last_rent_payment": null,
+                "pending_approval_id": null
+              }
+            ],
+            "total_rent_due": 2400.0,
+            "checking_balance": 3400.0,
+            "payments_waiting_for_approval": 0.0,
+            "checking_after_pending_and_this_rent": 1000.0,
+            "can_cover": true
+          }
+        },
+        {
+          "tool": "list_leases",
+          "arguments": {},
+          "is_error": false,
+          "elapsed_ms": 2,
+          "result": {
+            "business_date": "2026-08-31",
+            "leases": [
+              {
+                "lease_id": 1,
+                "space_name": "Chapel Street shop",
+                "landlord": "Elm City Properties",
+                "monthly_rent": 2400.0,
+                "next_due": "2026-09-02",
+                "days_until_due": 2,
+                "rent_status": "due_soon",
+                "notes": null,
+                "last_rent_payment": null,
+                "pending_approval_id": null
+              }
+            ]
+          }
+        },
+        {
+          "tool": "verify_rent_notice",
+          "arguments": {
+            "ticket_id": 102
+          },
+          "is_error": false,
+          "elapsed_ms": 2,
+          "result": {
+            "ticket_id": 102,
+            "business_date": "2026-08-31",
+            "ticket_notes": "Email: shop rent due in 2 days.",
+            "lease": {
+              "lease_id": 1,
+              "space_name": "Chapel Street shop",
+              "landlord": "Elm City Properties",
+              "monthly_rent": 2400.0,
+              "next_due": "2026-09-02",
+              "days_until_due": 2,
+              "rent_status": "due_soon",
+              "notes": null,
+              "last_rent_payment": null,
+              "pending_approval_id": null
+            },
+            "amount_to_pay": 2400.0,
+            "checks": [
+              {
+                "check": "lease_linked",
+                "ok": true,
+                "detail": "Lease 1 (Chapel Street shop)"
+              },
+              {
+                "check": "requester_is_landlord",
+                "ok": true,
+                "detail": "Requester 'Elm City Properties', landlord on lease 'Elm City Properties'"
+              },
+              {
+                "check": "rent_coming_due",
+                "ok": true,
+                "detail": "Next due 2026-09-02 (2 days)"
+              },
+              {
+                "check": "not_already_queued",
+                "ok": true,
+                "detail": "None"
+              }
+            ],
+            "verdict": "verified"
+          }
+        },
+        {
+          "tool": "verify_rent_notice",
+          "arguments": {
+            "ticket_id": 101
+          },
+          "is_error": true,
+          "elapsed_ms": 1,
+          "result": {
+            "error": "Ticket 101 is a 'customer_order' ticket, not a rent_notice."
+          }
+        }
+      ],
+      "checks": [
+        {
+          "check": "rent due within 7 days: Chapel Street shop, $2,400 on 2026-09-02",
+          "pass": true
+        },
+        {
+          "check": "lease is due_soon, 2 days away",
+          "pass": true
+        },
+        {
+          "check": "checking can cover it: $3,400 - $2,400 = $1,000 left",
+          "pass": true
+        },
+        {
+          "check": "rent notice 102 verified on all 4 checks",
+          "pass": true
+        },
+        {
+          "check": "amount payable is the lease rent, $2,400",
+          "pass": true
+        },
+        {
+          "check": "ticket 101 refused (not a rent notice)",
+          "pass": true
+        },
+        {
+          "check": "working database unchanged",
+          "pass": true
+        }
+      ],
+      "passed": true
+    }
+  }
+}

@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campus Customs · Agent Monitor</title>
+<style>
+:root{--bg:#0a1220;--panel:#121c2e;--panel2:#1a263b;--line:#26344d;--text:#f4f6fb;--muted:#9aa6bb;
+--yale:#00356b;--brand:#286dc0;--accent:#6fa8ff;--glow:rgba(111,168,255,.14);--ok:#5ee0a0;--warn:#ffc35a;--bad:#ff6b6b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+header{padding:20px 28px 0;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0c2245,var(--bg))}
+h1{margin:0;font-size:20px;letter-spacing:.2px;font-family:Georgia,serif}h1 span{color:var(--brand)}
+.sub{color:var(--muted);font-size:12.5px;margin:4px 0 14px}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav button{background:none;border:1px solid transparent;border-bottom:none;color:var(--muted);padding:10px 16px;
+border-radius:10px 10px 0 0;cursor:pointer;font:inherit;font-weight:600}
+nav button:hover{color:var(--text)}nav button[aria-selected=true]{color:var(--text);background:var(--panel);border-color:var(--line);
+box-shadow:inset 0 2px 0 var(--brand)}
+nav .later{opacity:.75}
+main{padding:22px 28px 60px;max-width:1400px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:16px}
+.card h2{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin:0 0 10px}
+.row{display:flex;gap:16px;flex-wrap:wrap}.row>.card{flex:1;min-width:320px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.chip{border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:3px 10px;font-size:12px;color:var(--muted)}
+.chip b{color:var(--text)}.chip.brand{border-color:var(--brand);color:var(--accent);background:var(--glow)}
+.chip.ok{border-color:#1f5a40;color:var(--ok)}.chip.warn{border-color:#5a4720;color:var(--warn)}.chip.bad{border-color:#5a2030;color:var(--bad)}
+.quote{border-left:3px solid var(--brand);padding:6px 12px;background:var(--panel2);border-radius:0 8px 8px 0;margin:8px 0;white-space:pre-wrap}
+.label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:16px}
+.agent .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.agent .name{font-weight:700;font-size:15px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cols h3{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin:0 0 6px}
+ul.steps,ul.acts{list-style:none;margin:0;padding:0}
+ul.steps li{display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed var(--line)}
+ul.steps li:last-child,ul.acts li:last-child{border:none}
+.mark{width:18px;flex:none;text-align:center;font-weight:700}.mark.ok{color:var(--ok)}.mark.bad{color:var(--bad)}.mark.opt{color:var(--muted)}
+.why{display:block;color:var(--muted);font-size:12px}
+ul.acts li{padding:5px 0;border-bottom:1px dashed var(--line);font-size:12.5px;word-break:break-word}
+ul.acts .k{color:var(--accent);font-weight:600;margin-right:4px}
+.empty{color:var(--muted);font-style:italic}
+.extra{margin-top:8px;font-size:12px;color:var(--warn)}
+details summary{cursor:pointer;color:var(--accent);font-weight:600}
+.tl{margin-top:10px}.tl div{padding:4px 0;border-bottom:1px solid var(--line);font-size:12.5px;display:flex;gap:10px}
+.tl .t{color:var(--muted);flex:none;width:64px}.tl .a{flex:none;width:130px;font-weight:600}
+.tl .x{word-break:break-word}
+.k-handoff .x,.k-handoff_reply .x{color:var(--accent)}.k-tool_error .x,.k-handoff_refused .x{color:var(--warn)}
+.placeholder{text-align:center;padding:70px 20px;border:1px dashed var(--brand);border-radius:16px;background:var(--glow)}
+.placeholder .big{font-size:40px;color:var(--brand);font-weight:800}
+.flow{list-style:none;margin:8px 0 0;padding:0;counter-reset:f}
+.flow li{display:grid;grid-template-columns:26px 22px 120px 1fr;gap:8px;align-items:start;padding:7px 0;border-bottom:1px dashed var(--line)}
+.flow li:last-child{border:none}.flow .n{color:var(--brand);font-weight:800}
+.flow .who{font-weight:700}.flow .arrow{color:var(--accent)}
+.mark.ooo{color:var(--warn)}
+.prio{list-style:none;margin:6px 0 0;padding:0}.prio li{padding:6px 10px;border-radius:8px;margin-bottom:4px;background:var(--panel2);display:flex;gap:10px}
+.prio li.me{outline:1px solid var(--brand);background:var(--glow)}.prio .r{color:var(--brand);font-weight:800;width:22px}
+.job{margin:0;padding-left:18px}.job li{margin:3px 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:900px){.two{grid-template-columns:1fr}}
+.score{font-size:28px;font-weight:800;color:var(--brand)}
+.bar{height:8px;background:var(--panel2);border-radius:99px;overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--accent))}
+</style></head>
+<body>
+<header>
+  <h1>Campus Customs <span>Agent Monitor</span></h1>
+  <div class="sub" id="sub"></div>
+  <nav id="tabs" role="tablist"></nav>
+</header>
+<main id="panel" role="tabpanel"></main>
+<script id="data" type="application/json">{"generated": "2026-10-14 16:45", "business_date": "2026-08-31", "audit": {"entries": 644, "ok": true, "problem": null}, "ranking": [{"ticket_id": 103, "subject": "Bulk hoodie discount", "type": "price_override", "tier": 3, "reason": "A sales opportunity with no deadline: important, but it can wait for the others", "detail": "20 wanted, 12 short, no deadline", "due": "9999-12-31", "rank": 1}], "review": {"recommendations": ["Approve approval #3: $2,400.00 rent for lease 1, due 2026-09-02. It is due in two days; with approval #2, checking remains $160.00.", "Approve approval #2: $840.00 payment for open, 3-days-overdue invoice 501 to Bulldog Print Co. It is overdue; with approval #3, checking remains $160.00. Note the linked size-S reprint has no recorded quantity or confirmed arrival date, so it does not resolve ticket 101 yet.", "Hold approval #1: PO #1 for $264.00 for 12 CC-HOOD-NAVY size M, ticket 103. The PO conflicts with near-term rent and the overdue invoice: approving it as well would take checking to -$104.00. Revisit after cash coverage is addressed."], "expected_first": 103, "matches": false}, "tickets": [{"id": 103, "type": "price_override", "requester": "Yale AI Club", "subject": "Bulk hoodie discount", "notes": "Student org wants 20 hoodies, size M, asking for a bulk discount.", "status_now": "waiting_on_human", "facts": {"sku": "CC-HOOD-NAVY", "size": "M", "qty": 20, "on_hand": 8, "short_by": 12, "invoice": null, "lease": null}, "run": {"run_id": "20261014T203842-4029a0", "started": "2026-10-14T16:38:42.527-04:00", "database": "data/campus_customs_new.db", "model": "gpt-6-luna", "model_calls": 27, "handoffs": 5, "seconds": 408.0, "error": null}, "boss": {"understanding": "Yale AI Club requests 20 CC-HOOD-NAVY hoodies, size M, and a bulk discount. The ticket has no invoice or prior approval. The requested quantity exceeds on-hand stock, and both a discount and restock PO are pending human approval. A customer message draft is saved but must be sent by a human.", "decision": "Inventory found 8 on hand and a shortfall of 12. Purchase order #1 for 12 units from Bulldog Print Co for $264.00 is pending approval, with estimated arrival 2026-09-05. Accounting found list price $58.00 and unit cost $22.00; discount approval #3 proposes $31.43 per hoodie ($628.60 total), the lowest price that meets the 30.0% minimum margin, and is pending approval. This discount was queued although the customer did not specify a target discount. Accounting warned cash would be \u2212$104.00 after all pending obligations; consider that before approving the purchase order. Draft message #2 is saved; a human must send it. Do not promise availability or price until the relevant approvals are decided.", "final_status": "waiting_on_human", "pending_approvals": ["Approval #3: discount to $31.43 per hoodie, $628.60 total.", "Approval #4: purchase order #1 for 12 hoodies, $264.00."], "assignments": [{"agent": "inventory", "task": "Check stock for 20 CC-HOOD-NAVY size M and identify the shortfall; then arrange restock with Accounting for any shortfall, after checking for duplicate approvals.", "why": "Inventory has stock, shortfall and vendor/restock coordination tools."}, {"agent": "accounting", "task": "Identify list price, unit cost and the lowest permissible price / largest discount within the minimum margin for the requested order; no target discount was supplied.", "why": "Accounting has margin and discount-approval capabilities. It also queued the proposed discount approval."}, {"agent": "customer_service", "task": "Draft a reply reflecting the stock shortfall and pending restock and discount approvals, without promising fulfillment or price.", "why": "Customer_service is equipped to draft customer messages."}], "customer_message_ids": [2]}, "score": {"done": 13, "required": 13, "out_of_order": 1}, "priority": {"ticket_id": 103, "subject": "Bulk hoodie discount", "type": "price_override", "tier": 3, "reason": "A sales opportunity with no deadline: important, but it can wait for the others", "detail": "20 wanted, 12 short, no deadline", "due": "9999-12-31", "rank": 1}, "first_agent": {"expected": "inventory", "why": "A discount only matters if we can supply the quantity: Inventory checks stock first and starts any restock", "actual": "inventory"}, "flow": [{"id": "read", "agent": "boss", "action": "Read and understand the ticket; decide its priority", "why": "Every ticket starts with the Boss", "tools": ["get_ticket"], "handoff_to": null, "handoff_from": null, "first_handoff": false, "final_status": null, "after": [], "required": true, "done": true, "in_order": true, "seq": 588, "evidence": ["boss ran get_ticket"]}, {"id": "first", "agent": "boss", "action": "Call Inventory first", "why": "A discount only matters if we can supply the quantity: Inventory checks stock first and starts any restock", "tools": [], "handoff_to": "inventory", "handoff_from": "boss", "first_handoff": true, "final_status": null, "after": ["read"], "required": true, "done": true, "in_order": true, "seq": 589, "evidence": ["Boss's first hand-off went to inventory"]}, {"id": "stock", "agent": "inventory", "action": "Check CC-HOOD-NAVY size M for 20 (stock by SKU and size)", "why": "Exact count by size", "tools": ["check_stock"], "handoff_to": null, "handoff_from": null, "first_handoff": false, "final_status": null, "after": ["first"], "required": true, "done": true, "in_order": true, "seq": 593, "evidence": ["inventory ran check_stock"]}, {"id": "vendor", "agent": "inventory", "action": "Find the vendor that can restock the 12 short", "why": "Inventory figures out which vendor can restock, when and at what cost", "tools": ["find_restock_vendor"], "handoff_to": null, "handoff_from": null, "first_handoff": false, "final_status": null, "after": ["stock"], "required": true, "done": true, "in_order": true, "seq": 598, "evidence": ["inventory ran find_restock_vendor"]}, {"id": "to_acct", "agent": "inventory", "action": "Send the purchase-order details to Accounting", "why": "Accounting receives the order from Inventory", "tools": [], "handoff_to": "accounting", "handoff_from": "inventory", "first_handoff": false, "final_status": null, "after": ["vendor"], "required": true, "done": true, "in_order": true, "seq": 620, "evidence": ["inventory -> accounting"]}, {"id": "po", "agent": "accounting", "action": "Create a purchase order for 12 units for human approval", "why": "Only Accounting queues money; the human approves", "tools": ["prepare_purchase_order"], "handoff_to": null, "handoff_from": null, "first_handoff": false, "final_status": null, "after": ["to_acct"], "required": true, "done": true, "in_order": true, "seq": 628, "evidence": ["accounting ran prepare_purchase_order"]}, {"id": "ask_acct", "agent": "boss", "action": "Then ask Accounting about the discount", "why": "Margins are Accounting's job", "tools": [], "handoff_to": "accounting", "handoff_from": "boss", "first_handoff": false, "final_status": null, "after": ["stock"], "required": true, "done": true, "in_order": false, "seq": 590, "evidence": ["boss -> accounting"]}, {"id": "margin", "agent": "accounting", "action": "Check margins at candidate prices", "why": "Never below cost; keep the 30% minimum", "tools": ["check_margin"], "handoff_to": null, "handoff_from": null, "first_handoff": false, "final_status": null, "after": ["ask_acct"], "required": true, "done": true, "in_order": true, "seq": 600, "evidence": ["accounting ran check_margin"]}, {"id": "discount", "agent": "accounting", "action": "Queue a discount within the margin rules for approval", "why": "Discounts need human approval", "tools": ["request_discount_approval"], "handoff_to": null, "handoff_from": null, "first_handoff": false, "final_status": null, "after": ["margin"], "required": true, "done": true, "in_order": true, "seq": 609, "evidence": ["accounting ran request_discount_approval"]}, {"id": "ask_cs", "agent": "boss", "action": "Ask Customer Service for a draft once stock and price are known", "why": "The club is waiting for an answer", "tools": [], "handoff_to": "customer_service", "handoff_from": null, "first_handoff": false, "final_status": null, "after": ["stock", "margin"], "required": true, "done": true, "in_order": true, "seq": 633, "evidence": ["boss -> customer_service"]}, {"id": "draft", "agent": "customer_service", "action": "Draft a reply to the requester", "why": "Discount and restock described as pending", "tools": ["draft_customer_message"], "handoff_to": null, "handoff_from": null, "first_handoff": false, "final_status": null, "after": ["ask_cs"], "required": true, "done": true, "in_order": true, "seq": 639, "evidence": ["customer_service ran draft_customer_message"]}, {"id": "decide", "agent": "boss", "action": "Record the final call", "why": "Only the Boss decides; it must be written down", "tools": ["update_ticket"], "handoff_to": null, "handoff_from": null, "first_handoff": false, "final_status": null, "after": ["draft"], "required": true, "done": true, "in_order": true, "seq": 642, "evidence": ["boss ran update_ticket"]}, {"id": "status", "agent": "boss", "action": "Final status: waiting_on_human", "why": "Anything queued for approval waits on the human", "tools": [], "handoff_to": null, "handoff_from": null, "first_handoff": false, "final_status": "waiting_on_human", "after": [], "required": true, "done": true, "in_order": true, "seq": 643, "evidence": ["final status: waiting_on_human"]}], "agents": [{"name": "boss", "label": "Boss", "verdict": "done, but out of order", "extra_actions": [], "stay_out_reason": null, "steps": [{"id": "read", "agent": "boss", "action": "Read and understand the ticket; decide its priority", "why": "Every ticket starts with the Boss", "tools": ["get_ticket"], "handoff_to": null, "handoff_from": null, "first_handoff": false, "final_status": null, "after": [], "required": true, "done": true, "in_order": true, "seq": 588, "evidence": ["boss ran get_ticket"]}, {"id": "first", "agent": "boss", "action": "Call Inventory first", "why": "A discount only matters if we can supply the quantity: Inventory checks stock first and starts any restock", "tools": [], "handoff_to": "inventory", "handoff_from": "boss", "first_handoff": true, "final_status": null, "after": ["read"], "required": true, "done": true, "in_order": true, "seq": 589, "evidence": ["Boss's first hand-off went to inventory"]}, {"id": "ask_acct", "agent": "boss", "action": "Then ask Accounting about the discount", "why": "Margins are Accounting's job", "tools": [], "handoff_to": "accounting", "handoff_from": "boss", "first_handoff": false, "final_status": null, "after": ["stock"], "required": true, "done": true, "in_order": false, "seq": 590, "evidence": ["boss -> accounting"]}, {"id": "ask_cs", "agent": "boss", "action": "Ask Customer Service for a draft once stock and price are known", "why": "The club is waiting for an answer", "tools": [], "handoff_to": "customer_service", "handoff_from": null, "first_handoff": false, "final_status": null, "after": ["stock", "margin"], "required": true, "done": true, "in_order": true, "seq": 633, "evidence": ["boss -> customer_service"]}, {"id": "decide", "agent": "boss", "action": "Record the final call", "why": "Only the Boss decides; it must be written down", "tools": ["update_ticket"], "handoff_to": null, "handoff_from": null, "first_handoff": false, "final_status": null, "after": ["draft"], "required": true, "done": true, "in_order": true, "seq": 642, "evidence": ["boss ran update_ticket"]}, {"id": "status", "agent": "boss", "action": "Final status: waiting_on_human", "why": "Anything queued for approval waits on the human", "tools": [], "handoff_to": null, "handoff_from": null, "first_handoff": false, "final_status": "waiting_on_human", "after": [], "required": true, "done": true, "in_order": true, "seq": 643, "evidence": ["final status: waiting_on_human"]}], "actual": [{"seq": 587, "time": "16:38:42", "agent": "boss", "depth": 0, "kind": "tool_call", "text": "get_ticket({\"ticket_id\": 103})"}, {"seq": 589, "time": "16:38:43", "agent": "boss", "depth": 0, "kind": "handoff", "text": "asks Inventory: Ticket 103: Check available stock for CC-HOOD-NAVY, size M, against the request for 20 hoodies. Report exact on-hand/available quantity, any shortfall, and whether stock can cover it."}, {"seq": 590, "time": "16:38:43", "agent": "boss", "depth": 0, "kind": "handoff", "text": "asks Accounting: Ticket 103: Yale AI Club requests 20 units of CC-HOOD-NAVY size M and asked for a bulk discount, but gave no target price/discount. Please identify the list price and unit cost, and use margin data to recommend the lowest permissible unit price / largest disco\u2026"}, {"seq": 611, "time": "16:41:37", "agent": "boss", "depth": 0, "kind": "handoff", "text": "asks Inventory: Ticket 103 gap follow-up: You found 8 on hand and a 12-unit shortfall for CC-HOOD-NAVY size M; Bulldog Print Co estimate $264.00, arrival 2026-09-05. Please arrange a purchase order for exactly 12 with Accounting for human approval (first check ticket/approval\u2026"}, {"seq": 633, "time": "16:43:53", "agent": "boss", "depth": 0, "kind": "handoff", "text": "asks Customer Service: Ticket 103: Draft a customer reply to Yale AI Club about 20 CC-HOOD-NAVY hoodies, size M. Facts: 8 are on hand; purchase order #1 for remaining 12 at Bulldog Print Co is pending human approval, expected arrival 2026-09-05 if approved; discount approval #3 prop\u2026"}, {"seq": 641, "time": "16:45:25", "agent": "boss", "depth": 0, "kind": "tool_call", "text": "update_ticket({\"ticket_id\": 103, \"status\": \"waiting_on_human\", \"decision\": \"Yale AI Club requested 20 CC-HOOD-NAVY hoodies, size M, wi\u2026)"}, {"seq": 643, "time": "16:45:30", "agent": "boss", "depth": 0, "kind": "final", "text": "final call recorded"}]}, {"name": "inventory", "label": "Inventory", "verdict": "on track", "extra_actions": [], "stay_out_reason": null, "steps": [{"id": "stock", "agent": "inventory", "action": "Check CC-HOOD-NAVY size M for 20 (stock by SKU and size)", "why": "Exact count by size", "tools": ["check_stock"], "handoff_to": null, "handoff_from": null, "first_handoff": false, "final_status": null, "after": ["first"], "required": true, "done": true, "in_order": true, "seq": 593, "evidence": ["inventory ran check_stock"]}, {"id": "vendor", "agent": "inventory", "action": "Find the vendor that can restock the 12 short", "why": "Inventory figures out which vendor can restock, when and at what cost", "tools": ["find_restock_vendor"], "handoff_to": null, "handoff_from": null, "first_handoff": false, "final_status": null, "after": ["stock"], "required": true, "done": true, "in_order": true, "seq": 598, "evidence": ["inventory ran find_restock_vendor"]}, {"id": "to_acct", "agent": "inventory", "action": "Send the purchase-order details to Accounting", "why": "Accounting receives the order from Inventory", "tools": [], "handoff_to": "accounting", "handoff_from": "inventory", "first_handoff": false, "final_status": null, "after": ["vendor"], "required": true, "done": true, "in_order": true, "seq": 620, "evidence": ["inventory -> accounting"]}], "actual": [{"seq": 591, "time": "16:38:43", "agent": "inventory", "depth": 1, "kind": "tool_call", "text": "check_stock({\"sku\": \"CC-HOOD-NAVY\", \"size\": \"M\", \"qty_needed\": 20})"}, {"seq": 595, "time": "16:38:43", "agent": "inventory", "depth": 1, "kind": "tool_call", "text": "list_approvals({\"status\": \"pending\"})"}, {"seq": 596, "time": "16:38:43", "agent": "inventory", "depth": 1, "kind": "tool_call", "text": "find_restock_vendor({\"sku\": \"CC-HOOD-NAVY\", \"size\": \"M\", \"qty\": 12})"}, {"seq": 601, "time": "16:38:44", "agent": "inventory", "depth": 1, "kind": "handoff_reply", "text": "replies to Boss: CC-HOOD-NAVY, size M: **8 on hand**, with no incoming stock. The shop **cannot fill the request for 20**; it is short **12**. Other sizes in stock are S: 4, L: 14, and XL: 6.\n\nFor the 12-unit shortfall, the fastest vendor is Bulldog Print Co, with an estimated arrival of **2026-09-05** and estimated cost of **$264.00**. No pending approvals were listed. I did not queue a purchase order."}, {"seq": 612, "time": "16:41:45", "agent": "inventory", "depth": 1, "kind": "tool_call", "text": "get_ticket({\"ticket_id\": 103})"}, {"seq": 613, "time": "16:41:45", "agent": "inventory", "depth": 1, "kind": "tool_call", "text": "list_approvals({\"status\": \"pending\"})"}, {"seq": 616, "time": "16:42:30", "agent": "inventory", "depth": 1, "kind": "tool_call", "text": "check_stock({\"sku\": \"CC-HOOD-NAVY\", \"size\": \"M\", \"qty_needed\": 20})"}, {"seq": 617, "time": "16:42:30", "agent": "inventory", "depth": 1, "kind": "tool_call", "text": "find_restock_vendor({\"sku\": \"CC-HOOD-NAVY\", \"size\": \"M\", \"qty\": 12})"}, {"seq": 620, "time": "16:42:38", "agent": "inventory", "depth": 1, "kind": "handoff", "text": "asks Accounting: Ticket 103: Please check cash and queue a purchase order for exactly 12 units of CC-HOOD-NAVY size M with vendor_id 1, Bulldog Print Co. Unit cost $22.00, estimated total $264.00, expected arrival 2026-09-05. On-hand is 8, shortfall is 12, and stock lookup rep\u2026"}, {"seq": 632, "time": "16:43:49", "agent": "inventory", "depth": 1, "kind": "handoff_reply", "text": "replies to Boss: Ticket 103: queued **purchase order #1** for 12 CC-HOOD-NAVY, size M, from Bulldog Print Co for **$264.00**, expected **2026-09-05**. **Approval #4 is pending human approval.**\n\nCash warning: after all pending obligations, cash would be **\u2212$104.00**. Approval #3 is the separate pending discount approval."}]}, {"name": "accounting", "label": "Accounting", "verdict": "on track", "extra_actions": [], "stay_out_reason": null, "steps": [{"id": "po", "agent": "accounting", "action": "Create a purchase order for 12 units for human approval", "why": "Only Accounting queues money; the human approves", "tools": ["prepare_purchase_order"], "handoff_to": null, "handoff_from": null, "first_handoff": false, "final_status": null, "after": ["to_acct"], "required": true, "done": true, "in_order": true, "seq": 628, "evidence": ["accounting ran prepare_purchase_order"]}, {"id": "margin", "agent": "accounting", "action": "Check margins at candidate prices", "why": "Never below cost; keep the 30% minimum", "tools": ["check_margin"], "handoff_to": null, "handoff_from": null, "first_handoff": false, "final_status": null, "after": ["ask_acct"], "required": true, "done": true, "in_order": true, "seq": 600, "evidence": ["accounting ran check_margin"]}, {"id": "discount", "agent": "accounting", "action": "Queue a discount within the margin rules for approval", "why": "Discounts need human approval", "tools": ["request_discount_approval"], "handoff_to": null, "handoff_from": null, "first_handoff": false, "final_status": null, "after": ["margin"], "required": true, "done": true, "in_order": true, "seq": 609, "evidence": ["accounting ran request_discount_approval"]}], "actual": [{"seq": 592, "time": "16:38:43", "agent": "accounting", "depth": 1, "kind": "tool_call", "text": "get_ticket({\"ticket_id\": 103})"}, {"seq": 599, "time": "16:38:44", "agent": "accounting", "depth": 1, "kind": "tool_call", "text": "check_margin({\"sku\": \"CC-HOOD-NAVY\", \"unit_price\": 1, \"qty\": 20})"}, {"seq": 602, "time": "16:38:44", "agent": "accounting", "depth": 1, "kind": "tool_call", "text": "check_margin({\"sku\": \"CC-HOOD-NAVY\", \"unit_price\": 58, \"qty\": 20})"}, {"seq": 603, "time": "16:38:44", "agent": "accounting", "depth": 1, "kind": "tool_call", "text": "check_margin({\"sku\": \"CC-HOOD-NAVY\", \"unit_price\": 31.43, \"qty\": 20})"}, {"seq": 604, "time": "16:38:44", "agent": "accounting", "depth": 1, "kind": "tool_call", "text": "check_margin({\"sku\": \"CC-HOOD-NAVY\", \"unit_price\": 31.42, \"qty\": 20})"}, {"seq": 608, "time": "16:38:44", "agent": "accounting", "depth": 1, "kind": "tool_call", "text": "request_discount_approval({\"ticket_id\": 103, \"unit_price\": 31.43, \"reason\": \"Recommend the lowest unit price that meets the 30.0% minimum margin f\u2026)"}, {"seq": 610, "time": "16:41:31", "agent": "accounting", "depth": 1, "kind": "handoff_reply", "text": "replies to Boss: For ticket 103, list price is **$58.00** and unit cost is **$22.00**. The lowest permissible price at the 30.0% minimum margin is **$31.43 per hoodie**: a **45.81% discount**, **$9.43 margin per unit**, and **$188.60 total margin** on 20 units. At **$31.42**, margin falls to **29.98%**, below minimum.\n\nI queued discount approval **#3** at $31.43 per unit, for **$628.60 total**; it is **pending hum\u2026"}, {"seq": 621, "time": "16:42:41", "agent": "accounting", "depth": 2, "kind": "tool_call", "text": "get_cash_position({})"}, {"seq": 622, "time": "16:42:41", "agent": "accounting", "depth": 2, "kind": "tool_call", "text": "list_approvals({\"status\": \"pending\"})"}, {"seq": 623, "time": "16:42:41", "agent": "accounting", "depth": 2, "kind": "tool_call", "text": "get_ticket({\"ticket_id\": 103})"}, {"seq": 627, "time": "16:42:43", "agent": "accounting", "depth": 2, "kind": "tool_call", "text": "prepare_purchase_order({\"vendor_id\": 1, \"sku\": \"CC-HOOD-NAVY\", \"size\": \"M\", \"qty\": 12, \"reason\": \"Cover the 12-unit stock gap for ticket 103's \u2026)"}, {"seq": 629, "time": "16:42:48", "agent": "accounting", "depth": 2, "kind": "tool_call", "text": "get_cash_position({\"within_days\": 30})"}, {"seq": 631, "time": "16:43:45", "agent": "accounting", "depth": 2, "kind": "handoff_reply", "text": "replies to Inventory: Checked cash, pending approvals, and ticket 103 to avoid duplicating an order. Queued purchase order **#1** for 12 CC-HOOD-NAVY, size M, from Bulldog Print Co for **$264.00**, expected **2026-09-05**. **Approval #4 is pending human approval.**\n\nChecking has **$160.00**; after all obligations, including this purchase order, it would be **\u2212$104.00**. Cash warning: the balance would not cover all obl\u2026"}]}, {"name": "facilities", "label": "Facilities", "verdict": "stayed out as expected", "extra_actions": [], "stay_out_reason": "A discount request has nothing to do with the shop space", "steps": [], "actual": []}, {"name": "customer_service", "label": "Customer Service", "verdict": "on track", "extra_actions": [], "stay_out_reason": null, "steps": [{"id": "draft", "agent": "customer_service", "action": "Draft a reply to the requester", "why": "Discount and restock described as pending", "tools": ["draft_customer_message"], "handoff_to": null, "handoff_from": null, "first_handoff": false, "final_status": null, "after": ["ask_cs"], "required": true, "done": true, "in_order": true, "seq": 639, "evidence": ["customer_service ran draft_customer_message"]}], "actual": [{"seq": 634, "time": "16:43:56", "agent": "customer_service", "depth": 1, "kind": "tool_call", "text": "get_ticket({\"ticket_id\": 103})"}, {"seq": 636, "time": "16:44:07", "agent": "customer_service", "depth": 1, "kind": "tool_call", "text": "list_customer_messages({\"ticket_id\": 103})"}, {"seq": 638, "time": "16:45:08", "agent": "customer_service", "depth": 1, "kind": "tool_call", "text": "draft_customer_message({\"ticket_id\": 103, \"subject\": \"Update on your hoodie request\", \"body\": \"Hi Yale AI Club,\\n\\nThanks for your request for \u2026)"}, {"seq": 640, "time": "16:45:16", "agent": "customer_service", "depth": 1, "kind": "handoff_reply", "text": "replies to Boss: Checked ticket 103 and existing customer messages; no draft was already present. Saved draft message #2, \u201cUpdate on your hoodie request,\u201d stating that 8 hoodies are on hand and both the restock and proposed bulk price are pending approval. A human still needs to review and send it."}]}], "timeline": [{"seq": 586, "time": "16:38:42", "agent": "boss", "depth": 0, "kind": "start", "text": "Handle ticket 103"}, {"seq": 587, "time": "16:38:42", "agent": "boss", "depth": 0, "kind": "tool_call", "text": "get_ticket({\"ticket_id\": 103})"}, {"seq": 589, "time": "16:38:43", "agent": "boss", "depth": 0, "kind": "handoff", "text": "asks Inventory: Ticket 103: Check available stock for CC-HOOD-NAVY, size M, against the request for 20 hoodies. Report exact on-hand/available quantity, any shortfall, and whether stock can cover it."}, {"seq": 590, "time": "16:38:43", "agent": "boss", "depth": 0, "kind": "handoff", "text": "asks Accounting: Ticket 103: Yale AI Club requests 20 units of CC-HOOD-NAVY size M and asked for a bulk discount, but gave no target price/discount. Please identify the list price and unit cost, and use margin data to recommend the lowest permissible unit price / largest disco\u2026"}, {"seq": 591, "time": "16:38:43", "agent": "inventory", "depth": 1, "kind": "tool_call", "text": "check_stock({\"sku\": \"CC-HOOD-NAVY\", \"size\": \"M\", \"qty_needed\": 20})"}, {"seq": 592, "time": "16:38:43", "agent": "accounting", "depth": 1, "kind": "tool_call", "text": "get_ticket({\"ticket_id\": 103})"}, {"seq": 595, "time": "16:38:43", "agent": "inventory", "depth": 1, "kind": "tool_call", "text": "list_approvals({\"status\": \"pending\"})"}, {"seq": 596, "time": "16:38:43", "agent": "inventory", "depth": 1, "kind": "tool_call", "text": "find_restock_vendor({\"sku\": \"CC-HOOD-NAVY\", \"size\": \"M\", \"qty\": 12})"}, {"seq": 599, "time": "16:38:44", "agent": "accounting", "depth": 1, "kind": "tool_call", "text": "check_margin({\"sku\": \"CC-HOOD-NAVY\", \"unit_price\": 1, \"qty\": 20})"}, {"seq": 601, "time": "16:38:44", "agent": "inventory", "depth": 1, "kind": "handoff_reply", "text": "replies to Boss: CC-HOOD-NAVY, size M: **8 on hand**, with no incoming stock. The shop **cannot fill the request for 20**; it is short **12**. Other sizes in stock are S: 4, L: 14, and XL: 6.\n\nFor the 12-unit shortfall, the fastest vendor is Bulldog Print Co, with an estimated arrival of **2026-09-05** and estimated cost of **$264.00**. No pending approvals were listed. I did not queue a purchase order."}, {"seq": 602, "time": "16:38:44", "agent": "accounting", "depth": 1, "kind": "tool_call", "text": "check_margin({\"sku\": \"CC-HOOD-NAVY\", \"unit_price\": 58, \"qty\": 20})"}, {"seq": 603, "time": "16:38:44", "agent": "accounting", "depth": 1, "kind": "tool_call", "text": "check_margin({\"sku\": \"CC-HOOD-NAVY\", \"unit_price\": 31.43, \"qty\": 20})"}, {"seq": 604, "time": "16:38:44", "agent": "accounting", "depth": 1, "kind": "tool_call", "text": "check_margin({\"sku\": \"CC-HOOD-NAVY\", \"unit_price\": 31.42, \"qty\": 20})"}, {"seq": 608, "time": "16:38:44", "agent": "accounting", "depth": 1, "kind": "tool_call", "text": "request_discount_approval({\"ticket_id\": 103, \"unit_price\": 31.43, \"reason\": \"Recommend the lowest unit price that meets the 30.0% minimum margin f\u2026)"}, {"seq": 610, "time": "16:41:31", "agent": "accounting", "depth": 1, "kind": "handoff_reply", "text": "replies to Boss: For ticket 103, list price is **$58.00** and unit cost is **$22.00**. The lowest permissible price at the 30.0% minimum margin is **$31.43 per hoodie**: a **45.81% discount**, **$9.43 margin per unit**, and **$188.60 total margin** on 20 units. At **$31.42**, margin falls to **29.98%**, below minimum.\n\nI queued discount approval **#3** at $31.43 per unit, for **$628.60 total**; it is **pending hum\u2026"}, {"seq": 611, "time": "16:41:37", "agent": "boss", "depth": 0, "kind": "handoff", "text": "asks Inventory: Ticket 103 gap follow-up: You found 8 on hand and a 12-unit shortfall for CC-HOOD-NAVY size M; Bulldog Print Co estimate $264.00, arrival 2026-09-05. Please arrange a purchase order for exactly 12 with Accounting for human approval (first check ticket/approval\u2026"}, {"seq": 612, "time": "16:41:45", "agent": "inventory", "depth": 1, "kind": "tool_call", "text": "get_ticket({\"ticket_id\": 103})"}, {"seq": 613, "time": "16:41:45", "agent": "inventory", "depth": 1, "kind": "tool_call", "text": "list_approvals({\"status\": \"pending\"})"}, {"seq": 616, "time": "16:42:30", "agent": "inventory", "depth": 1, "kind": "tool_call", "text": "check_stock({\"sku\": \"CC-HOOD-NAVY\", \"size\": \"M\", \"qty_needed\": 20})"}, {"seq": 617, "time": "16:42:30", "agent": "inventory", "depth": 1, "kind": "tool_call", "text": "find_restock_vendor({\"sku\": \"CC-HOOD-NAVY\", \"size\": \"M\", \"qty\": 12})"}, {"seq": 620, "time": "16:42:38", "agent": "inventory", "depth": 1, "kind": "handoff", "text": "asks Accounting: Ticket 103: Please check cash and queue a purchase order for exactly 12 units of CC-HOOD-NAVY size M with vendor_id 1, Bulldog Print Co. Unit cost $22.00, estimated total $264.00, expected arrival 2026-09-05. On-hand is 8, shortfall is 12, and stock lookup rep\u2026"}, {"seq": 621, "time": "16:42:41", "agent": "accounting", "depth": 2, "kind": "tool_call", "text": "get_cash_position({})"}, {"seq": 622, "time": "16:42:41", "agent": "accounting", "depth": 2, "kind": "tool_call", "text": "list_approvals({\"status\": \"pending\"})"}, {"seq": 623, "time": "16:42:41", "agent": "accounting", "depth": 2, "kind": "tool_call", "text": "get_ticket({\"ticket_id\": 103})"}, {"seq": 627, "time": "16:42:43", "agent": "accounting", "depth": 2, "kind": "tool_call", "text": "prepare_purchase_order({\"vendor_id\": 1, \"sku\": \"CC-HOOD-NAVY\", \"size\": \"M\", \"qty\": 12, \"reason\": \"Cover the 12-unit stock gap for ticket 103's \u2026)"}, {"seq": 629, "time": "16:42:48", "agent": "accounting", "depth": 2, "kind": "tool_call", "text": "get_cash_position({\"within_days\": 30})"}, {"seq": 631, "time": "16:43:45", "agent": "accounting", "depth": 2, "kind": "handoff_reply", "text": "replies to Inventory: Checked cash, pending approvals, and ticket 103 to avoid duplicating an order. Queued purchase order **#1** for 12 CC-HOOD-NAVY, size M, from Bulldog Print Co for **$264.00**, expected **2026-09-05**. **Approval #4 is pending human approval.**\n\nChecking has **$160.00**; after all obligations, including this purchase order, it would be **\u2212$104.00**. Cash warning: the balance would not cover all obl\u2026"}, {"seq": 632, "time": "16:43:49", "agent": "inventory", "depth": 1, "kind": "handoff_reply", "text": "replies to Boss: Ticket 103: queued **purchase order #1** for 12 CC-HOOD-NAVY, size M, from Bulldog Print Co for **$264.00**, expected **2026-09-05**. **Approval #4 is pending human approval.**\n\nCash warning: after all pending obligations, cash would be **\u2212$104.00**. Approval #3 is the separate pending discount approval."}, {"seq": 633, "time": "16:43:53", "agent": "boss", "depth": 0, "kind": "handoff", "text": "asks Customer Service: Ticket 103: Draft a customer reply to Yale AI Club about 20 CC-HOOD-NAVY hoodies, size M. Facts: 8 are on hand; purchase order #1 for remaining 12 at Bulldog Print Co is pending human approval, expected arrival 2026-09-05 if approved; discount approval #3 prop\u2026"}, {"seq": 634, "time": "16:43:56", "agent": "customer_service", "depth": 1, "kind": "tool_call", "text": "get_ticket({\"ticket_id\": 103})"}, {"seq": 636, "time": "16:44:07", "agent": "customer_service", "depth": 1, "kind": "tool_call", "text": "list_customer_messages({\"ticket_id\": 103})"}, {"seq": 638, "time": "16:45:08", "agent": "customer_service", "depth": 1, "kind": "tool_call", "text": "draft_customer_message({\"ticket_id\": 103, \"subject\": \"Update on your hoodie request\", \"body\": \"Hi Yale AI Club,\\n\\nThanks for your request for \u2026)"}, {"seq": 640, "time": "16:45:16", "agent": "customer_service", "depth": 1, "kind": "handoff_reply", "text": "replies to Boss: Checked ticket 103 and existing customer messages; no draft was already present. Saved draft message #2, \u201cUpdate on your hoodie request,\u201d stating that 8 hoodies are on hand and both the restock and proposed bulk price are pending approval. A human still needs to review and send it."}, {"seq": 641, "time": "16:45:25", "agent": "boss", "depth": 0, "kind": "tool_call", "text": "update_ticket({\"ticket_id\": 103, \"status\": \"waiting_on_human\", \"decision\": \"Yale AI Club requested 20 CC-HOOD-NAVY hoodies, size M, wi\u2026)"}, {"seq": 643, "time": "16:45:30", "agent": "boss", "depth": 0, "kind": "final", "text": "final call recorded"}]}]}</script>
+<script>
+const D = JSON.parse(document.getElementById('data').textContent);
+const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+const add = (p, ...kids) => { kids.forEach(k => k && p.appendChild(k)); return p; };
+const chip = (label, value, cls) => { const c = el('span', 'chip ' + (cls || '')); c.append(label ? label + ' ' : ''); add(c, el('b', null, value)); return c; };
+const verdictCls = v => v.startsWith('on track') || v.startsWith('stayed out') || v === 'not needed' ? 'ok' : v.startsWith('missed') || v.startsWith('should') ? 'bad' : 'warn';
+const typeName = t => ({customer_order: 'Customer order', rent_notice: 'Rent notice', price_override: 'Discount request'}[t] || t);
+
+document.getElementById('sub').textContent =
+  `Shop date ${D.business_date} · built ${D.generated} from the audit trail (${D.audit.entries} entries, chain ${D.audit.ok ? 'OK' : 'BROKEN: ' + D.audit.problem}) · rebuild: .venv/bin/python scripts/build_agent_monitor.py`;
+
+const tabs = D.tickets.map(t => ({id: 't' + t.id, label: `Ticket ${t.id} · ${t.subject}`, render: () => ticketView(t)}))
+  .concat([{id: 'cash', label: 'Cash', later: true, render: () => placeholder('Cash', 'Cash position, what is owed and what each approval would do to the balance.')},
+           {id: 'reflection', label: 'Reflection', later: true, render: () => placeholder('Reflection', 'What the team did well, where it drifted from the playbook, and what to change.')}]);
+
+function placeholder(title, what) {
+  const p = el('div', 'placeholder');
+  return add(p, el('div', 'big', title), el('p', null, 'This tab is intentionally empty for now. It will be filled in a later problem.'),
+             el('p', 'empty', 'Planned: ' + what));
+}
+
+const AG = {boss:'Boss',inventory:'Inventory',accounting:'Accounting',facilities:'Facilities',customer_service:'Customer Service'};
+function markFor(s) {
+  if (s.done && s.in_order === false) return el('span', 'mark ooo', '⚠');
+  if (s.done) return el('span', 'mark ok', '✓');
+  return s.required ? el('span', 'mark bad', '✗') : el('span', 'mark opt', '○');
+}
+function expectedCard(t) {
+  const c = el('div', 'card');
+  c.append(el('h2', null, 'Expected — what the Boss and the team should do'));
+  const job = el('ol', 'job');
+  ['Read and understand every open ticket, and decide which one is the priority.',
+   'Call the agent who can solve this ticket first.',
+   'Hand out the rest in the right order (facts → requests for approval → customer draft), then make the final call alone.']
+    .forEach(x => job.append(el('li', null, x)));
+  add(c, el('div', 'label', "The Boss's job"), job);
+
+  const two = el('div', 'two');
+  // Priority across open tickets
+  const pr = el('div'); pr.append(el('div', 'label', 'Priority across open tickets (expected order)'));
+  const ul = el('ul', 'prio');
+  D.ranking.forEach(r => {
+    const li = el('li', r.ticket_id === t.id ? 'me' : '');
+    add(li, el('span', 'r', '#' + r.rank), add(el('span'), el('b', null, `Ticket ${r.ticket_id} · ${r.subject}`),
+        el('span', 'why', `${r.reason}${r.detail ? ' — ' + r.detail : ''}`)));
+    ul.append(li);
+  });
+  pr.append(ul);
+  const rv = D.review;
+  if (rv.recommendations && rv.recommendations.length) {
+    const ok = rv.matches;
+    add(pr, el('div', 'label', "Actual: the Boss's cross-ticket review put first"),
+        add(el('p'), el('span', 'mark ' + (ok ? 'ok' : 'bad'), ok ? '✓ ' : '✗ '), document.createTextNode(rv.recommendations[0])));
+  } else pr.append(el('p', 'empty', 'No cross-ticket review yet.'));
+  // First agent
+  const fa = el('div'); const f = t.first_agent || {};
+  fa.append(el('div', 'label', 'Who should be called first on this ticket'));
+  add(fa, add(el('p'), el('b', null, AG[f.expected] || f.expected || '—'), el('span', 'why', f.why || '')));
+  if (t.run.run_id) {
+    const ok = f.actual === f.expected;
+    add(fa, el('div', 'label', 'Actual first hand-off'),
+        add(el('p'), el('span', 'mark ' + (ok ? 'ok' : 'bad'), ok ? '✓ ' : '✗ '),
+            document.createTextNode(f.actual ? `Boss called ${AG[f.actual] || f.actual} first` : 'The Boss handed nothing off')));
+  }
+  add(two, pr, fa); c.append(two);
+
+  // Ordered flow
+  c.append(el('div', 'label', 'Expected flow, in order (✓ done · ⚠ done out of order · ✗ missed · ○ optional)'));
+  const fl = el('ol', 'flow');
+  t.flow.forEach((s, i) => {
+    const li = el('li');
+    const body = el('span', null, s.action + (s.required ? '' : ' (optional)'));
+    const why = s.why + (s.after.length ? ` · after: ${s.after.join(', ')}` : '') + (s.evidence.length ? ' · ' + s.evidence.join(', ') : '');
+    body.append(el('span', 'why', why));
+    add(li, el('span', 'n', String(i + 1)), markFor(s), el('span', 'who', AG[s.agent] || s.agent), body);
+    fl.append(li);
+  });
+  c.append(fl);
+  return c;
+}
+
+function ticketView(t) {
+  const wrap = el('div');
+  // Header: what the ticket is
+  const head = el('div', 'card');
+  add(head, el('h2', null, `Ticket ${t.id} · ${typeName(t.type)}`), el('div', null, `${t.requester} — ${t.subject}`));
+  add(head, el('div', 'label', "Requester's words (untrusted text, shown as-is)"), el('div', 'quote', t.notes || ''));
+  const f = t.facts, chips = el('div', 'chips');
+  if (f.sku) add(chips, chip('Item', `${f.sku} ${f.size} × ${f.qty}`), chip('On hand', String(f.on_hand)), chip('Short', String(f.short_by), f.short_by ? 'warn' : 'ok'));
+  if (f.invoice) add(chips, chip('Invoice', f.invoice, 'warn'));
+  if (f.lease) add(chips, chip('Lease', f.lease));
+  add(chips, chip('Ticket status now', t.status_now, 'brand'));
+  add(head, chips);
+  wrap.append(head);
+
+  wrap.append(expectedCard(t));
+
+  if (!t.run.run_id) { wrap.append(add(el('div', 'card'), el('p', 'empty', 'No agent run for this ticket yet. Run: .venv/bin/python -m agent_team'))); return wrap; }
+
+  // Run + Boss's call
+  const row = el('div', 'row');
+  const run = el('div', 'card');
+  const pct = t.score.required ? Math.round(100 * t.score.done / t.score.required) : 0;
+  add(run, el('h2', null, 'Playbook match'), el('div', 'score', `${t.score.done} / ${t.score.required}`),
+      el('div', 'empty', `required expected steps done${t.score.out_of_order ? ` · ${t.score.out_of_order} out of order` : ''}`), add(el('div', 'bar'), Object.assign(el('i'), {style: `width:${pct}%`})));
+  const rc = el('div', 'chips');
+  add(rc, chip('Model', t.run.model || '?'), chip('Model calls', String(t.run.model_calls)), chip('Hand-offs', String(t.run.handoffs)),
+      chip('Time', `${t.run.seconds}s`), chip('Database', t.run.database), chip('Run', t.run.run_id));
+  if (t.run.error) add(rc, chip('Error', t.run.error, 'bad'));
+  add(run, rc);
+  const boss = el('div', 'card');
+  add(boss, el('h2', null, "Boss's final call"), chip('Final status', t.boss.final_status || '—', 'brand'));
+  add(boss, el('div', 'label', 'Understanding'), el('p', null, t.boss.understanding || '—'));
+  add(boss, el('div', 'label', 'Decision'), el('p', null, t.boss.decision || '—'));
+  if ((t.boss.pending_approvals || []).length) {
+    const ul = el('ul'); t.boss.pending_approvals.forEach(p => ul.append(el('li', null, p)));
+    add(boss, el('div', 'label', 'Waiting for the human'), ul);
+  }
+  add(row, run, boss); wrap.append(row);
+
+  // Expected vs actual, per agent
+  const sec = el('div', 'card'); add(sec, el('h2', null, 'Expected vs actual — by agent'));
+  const grid = el('div', 'grid');
+  t.agents.forEach(a => {
+    const c = el('div', 'card agent');
+    add(c, add(el('div', 'top'), el('span', 'name', a.label), el('span', 'chip ' + verdictCls(a.verdict), a.verdict)));
+    const cols = el('div', 'cols');
+    const exp = el('div'); exp.append(el('h3', null, 'Expected (playbook)'));
+    if (a.stay_out_reason) exp.append(el('p', 'empty', 'Should stay out: ' + a.stay_out_reason));
+    else if (!a.steps.length) exp.append(el('p', 'empty', 'Nothing required on this ticket.'));
+    else {
+      const ul = el('ul', 'steps');
+      a.steps.forEach(s => {
+        const li = el('li');
+        const m = markFor(s);
+        const body = el('span', null, s.action + (s.required ? '' : ' (optional)'));
+        body.append(el('span', 'why', s.why + (s.evidence.length ? ' · ' + s.evidence.join(', ') : '')));
+        add(li, m, body); ul.append(li);
+      });
+      exp.append(ul);
+    }
+    const act = el('div'); act.append(el('h3', null, 'Actual (audit trail)'));
+    if (!a.actual.length) act.append(el('p', 'empty', 'Did nothing on this ticket.'));
+    else {
+      const ul = el('ul', 'acts');
+      a.actual.forEach(x => { const li = el('li'); add(li, el('span', 'k', x.kind.replace('_', ' ')), document.createTextNode(x.text)); ul.append(li); });
+      act.append(ul);
+    }
+    add(cols, exp, act); c.append(cols);
+    if (a.extra_actions.length) c.append(el('div', 'extra', 'Not in the playbook: ' + a.extra_actions.join(', ')));
+    grid.append(c);
+  });
+  sec.append(grid); wrap.append(sec);
+
+  // Full timeline
+  const tl = el('div', 'card'); const det = el('details');
+  det.append(el('summary', null, `Full timeline (${t.timeline.length} steps, in order)`));
+  const list = el('div', 'tl');
+  t.timeline.forEach(x => {
+    const r = el('div', 'k-' + x.kind);
+    const who = el('span', 'a', '  '.repeat(x.depth) + (x.depth ? '↳ ' : '') + ({boss:'Boss',inventory:'Inventory',accounting:'Accounting',facilities:'Facilities',customer_service:'Customer Svc'}[x.agent] || x.agent));
+    add(r, el('span', 't', x.time), who, el('span', 'x', x.text)); list.append(r);
+  });
+  det.append(list); tl.append(det); wrap.append(tl);
+  return wrap;
+}
+
+const nav = document.getElementById('tabs'), panel = document.getElementById('panel');
+function show(id) {
+  [...nav.children].forEach(b => b.setAttribute('aria-selected', b.dataset.id === id));
+  panel.replaceChildren(tabs.find(x => x.id === id).render());
+  history.replaceState(null, '', '#' + id);
+}
+tabs.forEach(x => { const b = el('button', x.later ? 'later' : '', x.label); b.dataset.id = x.id; b.setAttribute('role', 'tab'); b.onclick = () => show(x.id); nav.append(b); });
+show(tabs.some(x => '#' + x.id === location.hash) ? location.hash.slice(1) : tabs[0].id);
+</script>
+</body></html>

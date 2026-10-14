@@ -1,0 +1,19 @@
+# Environments and builds
+.venv/
+node_modules/
+frontend/dist/
+__pycache__/
+.pytest_cache/
+*.pyc
+.DS_Store
+
+# Secrets (the API key lives in the parent folder's .env, never here)
+.env
+.env.*
+!.env.example
+
+# Scratch data: per-run database copies, reset backups, the original course zip
+data/runs/
+data/backups/
+data (2).zip
+*.resetting

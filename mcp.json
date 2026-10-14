@@ -1,0 +1,69 @@
+{
+  "mcpServers": {
+    "campus-boss": {
+      "type": "stdio",
+      "command": "/Users/shauryasrivastava_us/Library/CloudStorage/OneDrive-Personal/Personal - USA/Yale SOM/Semesters/AI Foundations for Managers/AI Foundations/hw 5/.venv/bin/python",
+      "args": [
+        "-m",
+        "mcp_server",
+        "--agent",
+        "boss"
+      ],
+      "env": {
+        "PYTHONPATH": "/Users/shauryasrivastava_us/Library/CloudStorage/OneDrive-Personal/Personal - USA/Yale SOM/Semesters/AI Foundations for Managers/AI Foundations/hw 5"
+      }
+    },
+    "campus-inventory": {
+      "type": "stdio",
+      "command": "/Users/shauryasrivastava_us/Library/CloudStorage/OneDrive-Personal/Personal - USA/Yale SOM/Semesters/AI Foundations for Managers/AI Foundations/hw 5/.venv/bin/python",
+      "args": [
+        "-m",
+        "mcp_server",
+        "--agent",
+        "inventory"
+      ],
+      "env": {
+        "PYTHONPATH": "/Users/shauryasrivastava_us/Library/CloudStorage/OneDrive-Personal/Personal - USA/Yale SOM/Semesters/AI Foundations for Managers/AI Foundations/hw 5"
+      }
+    },
+    "campus-accounting": {
+      "type": "stdio",
+      "command": "/Users/shauryasrivastava_us/Library/CloudStorage/OneDrive-Personal/Personal - USA/Yale SOM/Semesters/AI Foundations for Managers/AI Foundations/hw 5/.venv/bin/python",
+      "args": [
+        "-m",
+        "mcp_server",
+        "--agent",
+        "accounting"
+      ],
+      "env": {
+        "PYTHONPATH": "/Users/shauryasrivastava_us/Library/CloudStorage/OneDrive-Personal/Personal - USA/Yale SOM/Semesters/AI Foundations for Managers/AI Foundations/hw 5"
+      }
+    },
+    "campus-facilities": {
+      "type": "stdio",
+      "command": "/Users/shauryasrivastava_us/Library/CloudStorage/OneDrive-Personal/Personal - USA/Yale SOM/Semesters/AI Foundations for Managers/AI Foundations/hw 5/.venv/bin/python",
+      "args": [
+        "-m",
+        "mcp_server",
+        "--agent",
+        "facilities"
+      ],
+      "env": {
+        "PYTHONPATH": "/Users/shauryasrivastava_us/Library/CloudStorage/OneDrive-Personal/Personal - USA/Yale SOM/Semesters/AI Foundations for Managers/AI Foundations/hw 5"
+      }
+    },
+    "campus-customer-service": {
+      "type": "stdio",
+      "command": "/Users/shauryasrivastava_us/Library/CloudStorage/OneDrive-Personal/Personal - USA/Yale SOM/Semesters/AI Foundations for Managers/AI Foundations/hw 5/.venv/bin/python",
+      "args": [
+        "-m",
+        "mcp_server",
+        "--agent",
+        "customer_service"
+      ],
+      "env": {
+        "PYTHONPATH": "/Users/shauryasrivastava_us/Library/CloudStorage/OneDrive-Personal/Personal - USA/Yale SOM/Semesters/AI Foundations for Managers/AI Foundations/hw 5"
+      }
+    }
+  }
+}

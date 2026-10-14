@@ -1,0 +1,713 @@
+{
+  "tests": {
+    "inventory-shortfalls": {
+      "checked_at": "2026-10-13T20:34:47+00:00",
+      "database": "data/campus_customs_new.db (read-only test)",
+      "method": "plain SQL on the database after the calls, not through mcp_server code",
+      "fields_compared": 36,
+      "mismatches": 0,
+      "all_match": true,
+      "comparisons": [
+        {
+          "where": "desk",
+          "field": "business_date",
+          "mcp": "2026-08-31",
+          "database": "2026-08-31",
+          "match": true
+        },
+        {
+          "where": "inventory",
+          "field": "rows with qty <= 3",
+          "mcp": [
+            [
+              "CC-MUG-CREST",
+              "OS"
+            ],
+            [
+              "CC-TEE-WHITE",
+              "L"
+            ],
+            [
+              "CC-TEE-WHITE",
+              "S"
+            ],
+            [
+              "CC-TEE-WHITE",
+              "XL"
+            ]
+          ],
+          "database": [
+            [
+              "CC-MUG-CREST",
+              "OS"
+            ],
+            [
+              "CC-TEE-WHITE",
+              "L"
+            ],
+            [
+              "CC-TEE-WHITE",
+              "S"
+            ],
+            [
+              "CC-TEE-WHITE",
+              "XL"
+            ]
+          ],
+          "match": true
+        },
+        {
+          "where": "inventory CC-TEE-WHITE S",
+          "field": "name",
+          "mcp": "Classic Bulldog Tee",
+          "database": "Classic Bulldog Tee",
+          "match": true
+        },
+        {
+          "where": "inventory CC-TEE-WHITE S",
+          "field": "qty",
+          "mcp": 0,
+          "database": 0,
+          "match": true
+        },
+        {
+          "where": "inventory CC-TEE-WHITE S",
+          "field": "status",
+          "mcp": "out_of_stock",
+          "database": "out_of_stock",
+          "match": true
+        },
+        {
+          "where": "inventory CC-TEE-WHITE L",
+          "field": "name",
+          "mcp": "Classic Bulldog Tee",
+          "database": "Classic Bulldog Tee",
+          "match": true
+        },
+        {
+          "where": "inventory CC-TEE-WHITE L",
+          "field": "qty",
+          "mcp": 3,
+          "database": 3,
+          "match": true
+        },
+        {
+          "where": "inventory CC-TEE-WHITE L",
+          "field": "status",
+          "mcp": "low_stock",
+          "database": "low_stock",
+          "match": true
+        },
+        {
+          "where": "inventory CC-TEE-WHITE XL",
+          "field": "name",
+          "mcp": "Classic Bulldog Tee",
+          "database": "Classic Bulldog Tee",
+          "match": true
+        },
+        {
+          "where": "inventory CC-TEE-WHITE XL",
+          "field": "qty",
+          "mcp": 2,
+          "database": 2,
+          "match": true
+        },
+        {
+          "where": "inventory CC-TEE-WHITE XL",
+          "field": "status",
+          "mcp": "low_stock",
+          "database": "low_stock",
+          "match": true
+        },
+        {
+          "where": "inventory CC-MUG-CREST OS",
+          "field": "name",
+          "mcp": "Crest Mug",
+          "database": "Crest Mug",
+          "match": true
+        },
+        {
+          "where": "inventory CC-MUG-CREST OS",
+          "field": "qty",
+          "mcp": 0,
+          "database": 0,
+          "match": true
+        },
+        {
+          "where": "inventory CC-MUG-CREST OS",
+          "field": "status",
+          "mcp": "out_of_stock",
+          "database": "out_of_stock",
+          "match": true
+        },
+        {
+          "where": "tickets",
+          "field": "open tickets wanting more than on hand",
+          "mcp": [
+            101,
+            103
+          ],
+          "database": [
+            101,
+            103
+          ],
+          "match": true
+        },
+        {
+          "where": "ticket 101",
+          "field": "type",
+          "mcp": "customer_order",
+          "database": "customer_order",
+          "match": true
+        },
+        {
+          "where": "ticket 101",
+          "field": "requester",
+          "mcp": "Tauhid Zaman",
+          "database": "Tauhid Zaman",
+          "match": true
+        },
+        {
+          "where": "ticket 101",
+          "field": "sku",
+          "mcp": "CC-TEE-WHITE",
+          "database": "CC-TEE-WHITE",
+          "match": true
+        },
+        {
+          "where": "ticket 101",
+          "field": "size",
+          "mcp": "S",
+          "database": "S",
+          "match": true
+        },
+        {
+          "where": "ticket 101",
+          "field": "qty_wanted",
+          "mcp": 1,
+          "database": 1,
+          "match": true
+        },
+        {
+          "where": "ticket 101",
+          "field": "on_hand",
+          "mcp": 0,
+          "database": 0,
+          "match": true
+        },
+        {
+          "where": "ticket 101",
+          "field": "short_by",
+          "mcp": 1,
+          "database": 1,
+          "match": true
+        },
+        {
+          "where": "ticket 103",
+          "field": "type",
+          "mcp": "price_override",
+          "database": "price_override",
+          "match": true
+        },
+        {
+          "where": "ticket 103",
+          "field": "requester",
+          "mcp": "Yale AI Club",
+          "database": "Yale AI Club",
+          "match": true
+        },
+        {
+          "where": "ticket 103",
+          "field": "sku",
+          "mcp": "CC-HOOD-NAVY",
+          "database": "CC-HOOD-NAVY",
+          "match": true
+        },
+        {
+          "where": "ticket 103",
+          "field": "size",
+          "mcp": "M",
+          "database": "M",
+          "match": true
+        },
+        {
+          "where": "ticket 103",
+          "field": "qty_wanted",
+          "mcp": 20,
+          "database": 20,
+          "match": true
+        },
+        {
+          "where": "ticket 103",
+          "field": "on_hand",
+          "mcp": 8,
+          "database": 8,
+          "match": true
+        },
+        {
+          "where": "ticket 103",
+          "field": "short_by",
+          "mcp": 12,
+          "database": 12,
+          "match": true
+        },
+        {
+          "where": "incoming for tee S (invoice 501)",
+          "field": "invoice_id",
+          "mcp": 501,
+          "database": 501,
+          "match": true
+        },
+        {
+          "where": "incoming for tee S (invoice 501)",
+          "field": "vendor",
+          "mcp": "Bulldog Print Co",
+          "database": "Bulldog Print Co",
+          "match": true
+        },
+        {
+          "where": "incoming for tee S (invoice 501)",
+          "field": "description",
+          "mcp": "Rush reprint CC-TEE-WHITE S",
+          "database": "Rush reprint CC-TEE-WHITE S",
+          "match": true
+        },
+        {
+          "where": "incoming for tee S (invoice 501)",
+          "field": "invoice_status",
+          "mcp": "open",
+          "database": "open",
+          "match": true
+        },
+        {
+          "where": "incoming for tee S (invoice 501)",
+          "field": "invoice_due_date",
+          "mcp": "2026-08-28",
+          "database": "2026-08-28",
+          "match": true
+        },
+        {
+          "where": "incoming for tee S (invoice 501)",
+          "field": "lead time in note",
+          "mcp": true,
+          "database": true,
+          "match": true
+        },
+        {
+          "where": "incoming for other items",
+          "field": "count (only purchase orders could add any)",
+          "mcp": 0,
+          "database": 0,
+          "match": true
+        }
+      ]
+    },
+    "accounting-purchase-order": {
+      "checked_at": "2026-10-13T20:34:48+00:00",
+      "database": "temporary copy of data/campus_customs_new.db (this test writes)",
+      "method": "plain SQL on the database after the calls, not through mcp_server code",
+      "fields_compared": 31,
+      "mismatches": 0,
+      "all_match": true,
+      "comparisons": [
+        {
+          "where": "purchase_orders row",
+          "field": "id",
+          "mcp": 1,
+          "database": 1,
+          "match": true
+        },
+        {
+          "where": "purchase_orders row",
+          "field": "vendor_id",
+          "mcp": 1,
+          "database": 1,
+          "match": true
+        },
+        {
+          "where": "purchase_orders row",
+          "field": "sku",
+          "mcp": "CC-HOOD-NAVY",
+          "database": "CC-HOOD-NAVY",
+          "match": true
+        },
+        {
+          "where": "purchase_orders row",
+          "field": "size",
+          "mcp": "M",
+          "database": "M",
+          "match": true
+        },
+        {
+          "where": "purchase_orders row",
+          "field": "qty",
+          "mcp": 12,
+          "database": 12,
+          "match": true
+        },
+        {
+          "where": "purchase_orders row",
+          "field": "unit_cost",
+          "mcp": 22.0,
+          "database": 22.0,
+          "match": true
+        },
+        {
+          "where": "purchase_orders row",
+          "field": "total",
+          "mcp": 264.0,
+          "database": 264.0,
+          "match": true
+        },
+        {
+          "where": "purchase_orders row",
+          "field": "expected_date",
+          "mcp": "2026-09-05",
+          "database": "2026-09-05",
+          "match": true
+        },
+        {
+          "where": "purchase_orders row",
+          "field": "ticket_id",
+          "mcp": 103,
+          "database": 103,
+          "match": true
+        },
+        {
+          "where": "purchase_orders row",
+          "field": "status",
+          "mcp": "pending_approval",
+          "database": "pending_approval",
+          "match": true
+        },
+        {
+          "where": "purchase_orders row",
+          "field": "reason",
+          "mcp": "Ticket 103: Yale AI Club wants 20 size-M hoodies, only 8 on hand. Restock the 12 short.",
+          "database": "Ticket 103: Yale AI Club wants 20 size-M hoodies, only 8 on hand. Restock the 12 short.",
+          "match": true
+        },
+        {
+          "where": "purchase_orders row",
+          "field": "created_at",
+          "mcp": "2026-10-13T20:34:48+00:00",
+          "database": "2026-10-13T20:34:48+00:00",
+          "match": true
+        },
+        {
+          "where": "purchase_orders",
+          "field": "rows in table (wrong-vendor call added none)",
+          "mcp": 1,
+          "database": 1,
+          "match": true
+        },
+        {
+          "where": "vendors 1",
+          "field": "vendor actually supplies the SKU (vendor_products)",
+          "mcp": true,
+          "database": true,
+          "match": true
+        },
+        {
+          "where": "pricing CC-HOOD-NAVY",
+          "field": "unit_cost",
+          "mcp": 22.0,
+          "database": 22.0,
+          "match": true
+        },
+        {
+          "where": "pricing x qty",
+          "field": "total = unit_cost x 12",
+          "mcp": 264.0,
+          "database": 264.0,
+          "match": true
+        },
+        {
+          "where": "desk + vendors.lead_days",
+          "field": "expected_date = 2026-08-31 + lead days",
+          "mcp": "2026-09-05",
+          "database": "2026-09-05",
+          "match": true
+        },
+        {
+          "where": "ticket 103 vs inventory",
+          "field": "qty ordered = wanted - on hand",
+          "mcp": 12,
+          "database": 12,
+          "match": true
+        },
+        {
+          "where": "approvals row",
+          "field": "id",
+          "mcp": 1,
+          "database": 1,
+          "match": true
+        },
+        {
+          "where": "approvals row",
+          "field": "kind",
+          "mcp": "purchase_order",
+          "database": "purchase_order",
+          "match": true
+        },
+        {
+          "where": "approvals row",
+          "field": "ref_id",
+          "mcp": 1,
+          "database": 1,
+          "match": true
+        },
+        {
+          "where": "approvals row",
+          "field": "amount",
+          "mcp": 264.0,
+          "database": 264.0,
+          "match": true
+        },
+        {
+          "where": "approvals row",
+          "field": "summary",
+          "mcp": "Order 12 x CC-HOOD-NAVY size M from Bulldog Print Co for $264.00, arriving 2026-09-05",
+          "database": "Order 12 x CC-HOOD-NAVY size M from Bulldog Print Co for $264.00, arriving 2026-09-05",
+          "match": true
+        },
+        {
+          "where": "approvals row",
+          "field": "requested_by",
+          "mcp": "accounting",
+          "database": "accounting",
+          "match": true
+        },
+        {
+          "where": "approvals row",
+          "field": "status",
+          "mcp": "pending",
+          "database": "pending",
+          "match": true
+        },
+        {
+          "where": "approvals row",
+          "field": "decided_by",
+          "mcp": null,
+          "database": null,
+          "match": true
+        },
+        {
+          "where": "approvals row",
+          "field": "ref_id points to the purchase order",
+          "mcp": 1,
+          "database": 1,
+          "match": true
+        },
+        {
+          "where": "activity_log",
+          "field": "one entry: accounting requested_purchase_order",
+          "mcp": [
+            [
+              "accounting",
+              "requested_purchase_order",
+              1
+            ]
+          ],
+          "database": [
+            [
+              "accounting",
+              "requested_purchase_order",
+              1
+            ]
+          ],
+          "match": true
+        },
+        {
+          "where": "cash_accounts checking",
+          "field": "balance (unchanged)",
+          "mcp": 3400.0,
+          "database": 3400.0,
+          "match": true
+        },
+        {
+          "where": "payments",
+          "field": "rows (no payment made)",
+          "mcp": 0,
+          "database": 0,
+          "match": true
+        },
+        {
+          "where": "inventory CC-HOOD-NAVY M",
+          "field": "qty (unchanged until goods are received)",
+          "mcp": 8,
+          "database": 8,
+          "match": true
+        }
+      ]
+    },
+    "facilities-rent-payable": {
+      "checked_at": "2026-10-13T20:34:48+00:00",
+      "database": "data/campus_customs_new.db (read-only test)",
+      "method": "plain SQL on the database after the calls, not through mcp_server code",
+      "fields_compared": 22,
+      "mismatches": 0,
+      "all_match": true,
+      "comparisons": [
+        {
+          "where": "desk",
+          "field": "business_date",
+          "mcp": "2026-08-31",
+          "database": "2026-08-31",
+          "match": true
+        },
+        {
+          "where": "leases row 1 (list_leases)",
+          "field": "lease_id",
+          "mcp": 1,
+          "database": 1,
+          "match": true
+        },
+        {
+          "where": "leases row 1 (list_leases)",
+          "field": "space_name",
+          "mcp": "Chapel Street shop",
+          "database": "Chapel Street shop",
+          "match": true
+        },
+        {
+          "where": "leases row 1 (list_leases)",
+          "field": "landlord",
+          "mcp": "Elm City Properties",
+          "database": "Elm City Properties",
+          "match": true
+        },
+        {
+          "where": "leases row 1 (list_leases)",
+          "field": "monthly_rent",
+          "mcp": 2400.0,
+          "database": 2400.0,
+          "match": true
+        },
+        {
+          "where": "leases row 1 (list_leases)",
+          "field": "next_due",
+          "mcp": "2026-09-02",
+          "database": "2026-09-02",
+          "match": true
+        },
+        {
+          "where": "leases row 1 (list_leases)",
+          "field": "notes",
+          "mcp": null,
+          "database": null,
+          "match": true
+        },
+        {
+          "where": "leases",
+          "field": "number of leases",
+          "mcp": 1,
+          "database": 1,
+          "match": true
+        },
+        {
+          "where": "leases.next_due - desk.date_today",
+          "field": "days_until_due",
+          "mcp": 2,
+          "database": 2,
+          "match": true
+        },
+        {
+          "where": "payments (kind = rent, lease 1)",
+          "field": "last rent payment",
+          "mcp": null,
+          "database": null,
+          "match": true
+        },
+        {
+          "where": "approvals (rent_payment, pending)",
+          "field": "pending approval",
+          "mcp": null,
+          "database": null,
+          "match": true
+        },
+        {
+          "where": "leases due within 7 days",
+          "field": "lease ids",
+          "mcp": [
+            1
+          ],
+          "database": [
+            1
+          ],
+          "match": true
+        },
+        {
+          "where": "leases due within 7 days",
+          "field": "total_rent_due",
+          "mcp": 2400.0,
+          "database": 2400.0,
+          "match": true
+        },
+        {
+          "where": "cash_accounts checking",
+          "field": "balance",
+          "mcp": 3400.0,
+          "database": 3400.0,
+          "match": true
+        },
+        {
+          "where": "approvals",
+          "field": "payments waiting for approval",
+          "mcp": 0.0,
+          "database": 0,
+          "match": true
+        },
+        {
+          "where": "cash_accounts - leases",
+          "field": "checking after this rent",
+          "mcp": 1000.0,
+          "database": 1000.0,
+          "match": true
+        },
+        {
+          "where": "tickets 102",
+          "field": "type",
+          "mcp": "rent_notice",
+          "database": "rent_notice",
+          "match": true
+        },
+        {
+          "where": "tickets 102",
+          "field": "lease_id",
+          "mcp": 1,
+          "database": 1,
+          "match": true
+        },
+        {
+          "where": "tickets 102",
+          "field": "notes",
+          "mcp": "Email: shop rent due in 2 days.",
+          "database": "Email: shop rent due in 2 days.",
+          "match": true
+        },
+        {
+          "where": "tickets 102 requester vs leases landlord",
+          "field": "requester is the landlord",
+          "mcp": true,
+          "database": true,
+          "match": true
+        },
+        {
+          "where": "leases row 1",
+          "field": "amount_to_pay = monthly_rent",
+          "mcp": 2400.0,
+          "database": 2400.0,
+          "match": true
+        },
+        {
+          "where": "tickets 101",
+          "field": "type (why it was refused)",
+          "mcp": "customer_order",
+          "database": "customer_order",
+          "match": true
+        }
+      ]
+    }
+  }
+}

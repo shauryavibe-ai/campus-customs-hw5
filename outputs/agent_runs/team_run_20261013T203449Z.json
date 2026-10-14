@@ -1,0 +1,485 @@
+{
+  "run_at": "20261013T203449Z",
+  "model": "gpt-6-luna",
+  "database": "data/runs/team_run_20261013T203449Z.db",
+  "tickets": [
+    {
+      "run_id": "20261013T203451-5b00a4",
+      "ticket_id": 103,
+      "output": {
+        "ticket_id": 103,
+        "understanding": "Yale AI Club asks to buy 20 CC-HOOD-NAVY hoodies, size M, and requests a bulk discount. There is no specific discount amount or target price in the request. Stock is short, and a restock purchase order is awaiting human approval.",
+        "assignments": [
+          {
+            "agent": "inventory",
+            "task": "Check stock for 20 CC-HOOD-NAVY hoodies, size M, and address the 12-unit shortfall by identifying a vendor and coordinating the restock purchase order.",
+            "why": "Inventory can check SKU/size stock, find restock vendors and arrival timing; for restocks it coordinates with Accounting to queue the PO for human approval."
+          },
+          {
+            "agent": "accounting",
+            "task": "Coordinate on the restock purchase order for ticket 103; the resulting PO and approval are pending. Cash-position information received through the inventory hand-off needs reconciliation before approval.",
+            "why": "Accounting prepares purchase orders for human approval and checks cash position. The cash warning relayed through Inventory conflicts with the balance shown in approval #1."
+          },
+          {
+            "agent": "customer_service",
+            "task": "Draft a customer reply stating verified stock and approval-dependent arrival facts, without promising an unspecified discount, and ask whether the club wants follow-up once terms are confirmed.",
+            "why": "Customer service drafts messages to customers and student groups."
+          }
+        ],
+        "lead_agent": "accounting",
+        "agents_consulted": [
+          "inventory",
+          "accounting",
+          "customer_service"
+        ],
+        "final_status": "waiting_on_human",
+        "decision": "Inventory found 8 units available, leaving a shortfall of 12. Purchase order #1 for 12 units from Bulldog Print Co, totaling $264.00 with expected arrival 2026-09-05, is pending human approval under approval #1; the goods are not yet ordered. No discount approval was requested because the customer did not specify a discount amount or target price, and no discount is confirmed. Customer message draft #1 is saved but must be sent by a human. Before approving the PO, reconcile the cash warning relayed by Inventory (\u2212$104.00 after the PO and listed obligations) with approval #1, which records a checking balance of $3,400.00 and $3,400.00 after pending payments.",
+        "pending_approvals": [
+          "Approval #1: purchase order #1 for 12 CC-HOOD-NAVY hoodies, size M, totaling $264.00; reconcile the conflicting cash information before approving."
+        ],
+        "customer_message_ids": [
+          1
+        ]
+      },
+      "error": null,
+      "handoffs": 3,
+      "elapsed_s": 117.0,
+      "usage": {
+        "requests": 19,
+        "input_tokens": 74517,
+        "output_tokens": 3720
+      },
+      "events": [
+        {
+          "seq": 1,
+          "t": 0.0,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "boss",
+          "depth": 0,
+          "kind": "start",
+          "task": "Handle ticket 103"
+        },
+        {
+          "seq": 2,
+          "t": 4.85,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "boss",
+          "depth": 0,
+          "kind": "tool_call",
+          "tool": "get_ticket",
+          "args": {
+            "ticket_id": 103
+          }
+        },
+        {
+          "seq": 3,
+          "t": 5.13,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "boss",
+          "depth": 0,
+          "kind": "tool_result",
+          "tool": "get_ticket",
+          "result": "{\"business_date\": \"2026-08-31\", \"ticket\": {\"id\": 103, \"type\": \"price_override\", \"requester\": \"Yale AI Club\", \"subject\": \"Bulk hoodie discount\", \"sku\": \"CC-HOOD-NAVY\", \"size\": \"M\", \"qty\": 20, \"lease_id\": null, \"invoice_id\": null, \"status\": \"open\", \"notes\": \"Student org wants 20 hoodies, size M, asking for a bulk discount.\", \"created_at\": \"2026-08-31T16:55:00-04:00\"}, \"routing\": {\"lead\": \"accounting\", \"helpers\": [\"inventory\", \"customer_service\"]}, \"invoice\": null, \"lease\": null, \"approvals\": [], \"purchase_orders\": [], \"customer_messages\": [], \"status_history\": [], \"agent_handoffs\": []}"
+        },
+        {
+          "seq": 4,
+          "t": 11.38,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "boss",
+          "depth": 0,
+          "kind": "handoff",
+          "to": "inventory",
+          "task": "Ticket 103: Yale AI Club requests 20 units of CC-HOOD-NAVY, size M, with a bulk discount. Check available stock for this exact SKU/size and whether 20 can be fulfilled; report the stock/shortfall and any relevant restock timing/cost if short.",
+          "message_id": 1
+        },
+        {
+          "seq": 5,
+          "t": 13.42,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "inventory",
+          "depth": 1,
+          "kind": "tool_call",
+          "tool": "check_stock",
+          "args": {
+            "sku": "CC-HOOD-NAVY",
+            "size": "M",
+            "qty_needed": 20
+          }
+        },
+        {
+          "seq": 6,
+          "t": 13.42,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "inventory",
+          "depth": 1,
+          "kind": "tool_result",
+          "tool": "check_stock",
+          "result": "{\"sku\": \"CC-HOOD-NAVY\", \"name\": \"Basic Hoodie Big Yale\", \"location\": \"Aisle A\", \"list_price\": 58.0, \"business_date\": \"2026-08-31\", \"sizes\": [{\"size\": \"M\", \"qty\": 8, \"status\": \"in_stock\"}], \"total_units\": 8, \"incoming\": [], \"order_check\": {\"qty_needed\": 20, \"on_hand\": 8, \"can_fill\": false, \"short_by\": 12, \"other_sizes_in_stock\": {\"L\": 14, \"S\": 4, \"XL\": 6}}}"
+        },
+        {
+          "seq": 7,
+          "t": 17.27,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "inventory",
+          "depth": 1,
+          "kind": "tool_call",
+          "tool": "find_restock_vendor",
+          "args": {
+            "sku": "CC-HOOD-NAVY",
+            "size": "M",
+            "qty": 12
+          }
+        },
+        {
+          "seq": 8,
+          "t": 17.27,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "inventory",
+          "depth": 1,
+          "kind": "tool_call",
+          "tool": "list_approvals",
+          "args": {
+            "status": "pending"
+          }
+        },
+        {
+          "seq": 9,
+          "t": 17.28,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "inventory",
+          "depth": 1,
+          "kind": "tool_result",
+          "tool": "list_approvals",
+          "result": "{\"business_date\": \"2026-08-31\", \"approvals\": [], \"pending_payment_total\": 0.0}"
+        },
+        {
+          "seq": 10,
+          "t": 17.28,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "inventory",
+          "depth": 1,
+          "kind": "tool_result",
+          "tool": "find_restock_vendor",
+          "result": "{\"sku\": \"CC-HOOD-NAVY\", \"name\": \"Basic Hoodie Big Yale\", \"size\": \"M\", \"qty\": 12, \"business_date\": \"2026-08-31\", \"vendors\": [{\"vendor_id\": 1, \"vendor\": \"Bulldog Print Co\", \"specialty\": \"apparel reprint\", \"lead_days\": 5, \"expected_date\": \"2026-09-05\", \"unit_cost\": 22.0, \"estimated_total\": 264.0}], \"recommended_vendor_id\": 1, \"incoming\": [], \"note\": null}"
+        },
+        {
+          "seq": 11,
+          "t": 22.81,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "inventory",
+          "depth": 1,
+          "kind": "handoff",
+          "to": "accounting",
+          "task": "Ticket 103: Yale AI Club requests 20 units of CC-HOOD-NAVY, size M. Stock is 8, so short by 12; check_stock shows no incoming and list_approvals shows no pending approvals. Fastest/recommended vendor is vendor_id 1, Bulldog Print Co; unit cost $22.00, estimated total $264.00 for exactly 12 units; expected arrival 2026-09-05. Please check cash, queue a purchase order with prepare_purchase_order for SKU CC-HOOD-NAVY, size M, qty 12, and reply with the purchase order id, approval id, total and cash left after everything pending. Reason: cover the 12-unit shortfall for ticket 103.",
+          "message_id": 2
+        },
+        {
+          "seq": 12,
+          "t": 24.76,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "accounting",
+          "depth": 2,
+          "kind": "tool_call",
+          "tool": "get_cash_position",
+          "args": {}
+        },
+        {
+          "seq": 13,
+          "t": 24.76,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "accounting",
+          "depth": 2,
+          "kind": "tool_call",
+          "tool": "list_approvals",
+          "args": {
+            "status": "pending"
+          }
+        },
+        {
+          "seq": 14,
+          "t": 24.77,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "accounting",
+          "depth": 2,
+          "kind": "tool_result",
+          "tool": "list_approvals",
+          "result": "{\"business_date\": \"2026-08-31\", \"approvals\": [], \"pending_payment_total\": 0.0}"
+        },
+        {
+          "seq": 15,
+          "t": 24.77,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "accounting",
+          "depth": 2,
+          "kind": "tool_result",
+          "tool": "get_cash_position",
+          "result": "{\"business_date\": \"2026-08-31\", \"accounts\": [{\"name\": \"checking\", \"balance\": 3400.0, \"date\": \"2026-08-31\"}], \"checking_balance\": 3400.0, \"open_invoices\": [{\"invoice_id\": 501, \"vendor_id\": 1, \"vendor\": \"Bulldog Print Co\", \"amount\": 840.0, \"still_owed\": 840.0, \"due_date\": \"2026-08-28\", \"status\": \"open\", \"description\": \"Rush reprint CC-TEE-WHITE S\", \"days_overdue\": 3, \"days_until_due\": 0, \"linked_tickets\": [101], \"pending_approval_id\": null}], \"rent_due\": [{\"lease_id\": 1, \"space_name\": \"Chapel Street shop\", \"landlord\": \"Elm City Properties\", \"amount\": 2400.0, \"due_date\": \"2026-09-02\", \"days_until... (871 chars)"
+        },
+        {
+          "seq": 16,
+          "t": 26.63,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "accounting",
+          "depth": 2,
+          "kind": "tool_call",
+          "tool": "prepare_purchase_order",
+          "args": {
+            "vendor_id": 1,
+            "sku": "CC-HOOD-NAVY",
+            "size": "M",
+            "qty": 12,
+            "reason": "Cover the 12-unit shortfall for ticket 103.",
+            "ticket_id": 103
+          }
+        },
+        {
+          "seq": 17,
+          "t": 26.64,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "accounting",
+          "depth": 2,
+          "kind": "tool_result",
+          "tool": "prepare_purchase_order",
+          "result": "{\"purchase_order\": {\"id\": 1, \"vendor_id\": 1, \"sku\": \"CC-HOOD-NAVY\", \"size\": \"M\", \"qty\": 12, \"unit_cost\": 22.0, \"total\": 264.0, \"expected_date\": \"2026-09-05\", \"ticket_id\": 103, \"status\": \"pending_approval\", \"reason\": \"Cover the 12-unit shortfall for ticket 103.\", \"created_at\": \"2026-10-13T20:35:17+00:00\"}, \"approval\": {\"id\": 1, \"kind\": \"purchase_order\", \"ref_id\": 1, \"amount\": 264.0, \"summary\": \"Order 12 x CC-HOOD-NAVY size M from Bulldog Print Co for $264.00, arriving 2026-09-05\", \"details\": {\"purchase_order\": {\"id\": 1, \"vendor_id\": 1, \"sku\": \"CC-HOOD-NAVY\", \"size\": \"M\", \"qty\": 12, \"unit_cost\":... (1119 chars)"
+        },
+        {
+          "seq": 18,
+          "t": 40.92,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "accounting",
+          "depth": 2,
+          "kind": "handoff_reply",
+          "to": "inventory",
+          "status": "done",
+          "answer": "Checked pending approvals and cash. No approvals were pending; checking was **$3,400.00**. Queued purchase order **#1** for 12 \u00d7 CC-HOOD-NAVY, size M, totaling **$264.00**, with expected arrival **2026-09-05**. Approval **#1** is pending human approval.\n\nAfter the purchase order and all listed obligations\u2014the **$840.00** open invoice and **$2,400.00** rent due\u2014checking would be **\u2212$104.00**.",
+          "message_id": 2
+        },
+        {
+          "seq": 19,
+          "t": 46.9,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "inventory",
+          "depth": 1,
+          "kind": "handoff_reply",
+          "to": "boss",
+          "status": "done",
+          "answer": "Ticket 103: CC-HOOD-NAVY, size M has **8 units** in stock, so the shop is **12 short** of the requested 20. No stock was previously incoming. Other sizes in stock: S 4, L 14, XL 6.\n\nThe recommended vendor is **Bulldog Print Co** (vendor #1), with expected arrival **2026-09-05**. Restocking the 12-unit shortfall costs **$264.00**. Purchase order **#1** and approval **#1** are queued, pending human approval.\n\nAccounting warns that cash would be **\u2212$104.00** after the purchase order and listed obligations.",
+          "message_id": 1
+        },
+        {
+          "seq": 20,
+          "t": 56.26,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "boss",
+          "depth": 0,
+          "kind": "tool_call",
+          "tool": "list_approvals",
+          "args": {
+            "status": "pending"
+          }
+        },
+        {
+          "seq": 21,
+          "t": 56.28,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "boss",
+          "depth": 0,
+          "kind": "tool_result",
+          "tool": "list_approvals",
+          "result": "{\"business_date\": \"2026-08-31\", \"approvals\": [{\"id\": 1, \"kind\": \"purchase_order\", \"ref_id\": 1, \"amount\": 264.0, \"summary\": \"Order 12 x CC-HOOD-NAVY size M from Bulldog Print Co for $264.00, arriving 2026-09-05\", \"details\": {\"purchase_order\": {\"id\": 1, \"vendor_id\": 1, \"sku\": \"CC-HOOD-NAVY\", \"size\": \"M\", \"qty\": 12, \"unit_cost\": 22.0, \"total\": 264.0, \"expected_date\": \"2026-09-05\", \"ticket_id\": 103, \"status\": \"pending_approval\", \"reason\": \"Cover the 12-unit shortfall for ticket 103.\", \"created_at\": \"2026-10-13T20:35:17+00:00\"}, \"vendor\": \"Bulldog Print Co\", \"reason\": \"Cover the 12-unit shortfall f... (877 chars)"
+        },
+        {
+          "seq": 22,
+          "t": 62.62,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "boss",
+          "depth": 0,
+          "kind": "handoff",
+          "to": "customer_service",
+          "task": "Ticket 103 for Yale AI Club: draft a customer message about their request for 20 CC-HOOD-NAVY hoodies, size M, and a bulk discount. State only verified facts: 8 are currently in stock; restocking the 12-unit shortfall is pending human approval, with expected arrival 2026-09-05 if approved. Do not promise a discount or order. Explain no discount has been confirmed and ask whether they want to proceed once availability/discount terms are confirmed. Return the draft id.",
+          "message_id": 3
+        },
+        {
+          "seq": 23,
+          "t": 67.76,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "customer_service",
+          "depth": 1,
+          "kind": "tool_call",
+          "tool": "get_ticket",
+          "args": {
+            "ticket_id": 103
+          }
+        },
+        {
+          "seq": 24,
+          "t": 67.77,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "customer_service",
+          "depth": 1,
+          "kind": "tool_result",
+          "tool": "get_ticket",
+          "result": "{\"business_date\": \"2026-08-31\", \"ticket\": {\"id\": 103, \"type\": \"price_override\", \"requester\": \"Yale AI Club\", \"subject\": \"Bulk hoodie discount\", \"sku\": \"CC-HOOD-NAVY\", \"size\": \"M\", \"qty\": 20, \"lease_id\": null, \"invoice_id\": null, \"status\": \"open\", \"notes\": \"Student org wants 20 hoodies, size M, asking for a bulk discount.\", \"created_at\": \"2026-08-31T16:55:00-04:00\"}, \"routing\": {\"lead\": \"accounting\", \"helpers\": [\"inventory\", \"customer_service\"]}, \"invoice\": null, \"lease\": null, \"approvals\": [{\"id\": 1, \"kind\": \"purchase_order\", \"ref_id\": 1, \"amount\": 264.0, \"summary\": \"Order 12 x CC-HOOD-NAVY si... (2659 chars)"
+        },
+        {
+          "seq": 25,
+          "t": 69.71,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "customer_service",
+          "depth": 1,
+          "kind": "tool_call",
+          "tool": "list_customer_messages",
+          "args": {
+            "ticket_id": 103
+          }
+        },
+        {
+          "seq": 26,
+          "t": 69.72,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "customer_service",
+          "depth": 1,
+          "kind": "tool_result",
+          "tool": "list_customer_messages",
+          "result": "{\"business_date\": \"2026-08-31\", \"messages\": []}"
+        },
+        {
+          "seq": 27,
+          "t": 72.42,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "customer_service",
+          "depth": 1,
+          "kind": "tool_call",
+          "tool": "draft_customer_message",
+          "args": {
+            "ticket_id": 103,
+            "subject": "Update on your hoodie request",
+            "body": "Hi Yale AI Club,\n\nThanks for reaching out about 20 CC-HOOD-NAVY hoodies in size M. We currently have 8 in stock. Restocking the 12-unit shortfall is pending human approval; if approved, the expected arrival date is 2026-09-05. No bulk discount has been confirmed. Would you like us to follow up once availability and any discount terms are confirmed?\n\nBest,\nCampus Customs"
+          }
+        },
+        {
+          "seq": 28,
+          "t": 72.43,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "customer_service",
+          "depth": 1,
+          "kind": "tool_result",
+          "tool": "draft_customer_message",
+          "result": "{\"message\": {\"id\": 1, \"ticket_id\": 103, \"to_name\": \"Yale AI Club\", \"subject\": \"Update on your hoodie request\", \"body\": \"Hi Yale AI Club,\\n\\nThanks for reaching out about 20 CC-HOOD-NAVY hoodies in size M. We currently have 8 in stock. Restocking the 12-unit shortfall is pending human approval; if approved, the expected arrival date is 2026-09-05. No bulk discount has been confirmed. Would you like us to follow up once availability and any discount terms are confirmed?\\n\\nBest,\\nCampus Customs\", \"status\": \"draft\", \"drafted_by\": \"customer_service\", \"created_at\": \"2026-10-13T20:36:03+00:00\"}, \"up... (688 chars)"
+        },
+        {
+          "seq": 29,
+          "t": 74.87,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "customer_service",
+          "depth": 1,
+          "kind": "handoff_reply",
+          "to": "boss",
+          "status": "done",
+          "answer": "Draft message #1 saved for Yale AI Club. It states the verified stock and approval-dependent arrival date, notes that no bulk discount is confirmed, and asks whether they want a follow-up once availability and discount terms are confirmed. The restock and any discount remain pending; a human must review and send the draft.",
+          "message_id": 3
+        },
+        {
+          "seq": 30,
+          "t": 81.02,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "boss",
+          "depth": 0,
+          "kind": "tool_call",
+          "tool": "update_ticket",
+          "args": {
+            "ticket_id": 103,
+            "status": "waiting_on_human",
+            "decision": "Yale AI Club requested 20 CC-HOOD-NAVY hoodies, size M, with a bulk discount. Inventory found 8 units in stock, leaving a 12-unit shortfall. Purchase order #1 for 12 units from Bulldog Print Co, totaling $264.00, with expected arrival 2026-09-05, is pending human approval under approval #1. Approve or reject that restock request; the order is not placed until approved. No discount amount or target price was provided, so no discount approval was requested and no discount is confirmed. Customer message draft #1 explains the stock and approval-dependent arrival, and asks whether they want a follow-up once availability and discount terms are confirmed; a human must send it. Note: Inventory reported an accounting cash warning of \u2212$104.00 after the PO and listed obligations, while approval #1 records checking balance $3,400.00 and $3,400.00 after pending payments. Resolve that cash-position discrepancy before approving the PO."
+          }
+        },
+        {
+          "seq": 31,
+          "t": 81.03,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "boss",
+          "depth": 0,
+          "kind": "tool_result",
+          "tool": "update_ticket",
+          "result": "{\"ticket_id\": 103, \"old_status\": \"open\", \"new_status\": \"waiting_on_human\", \"decision\": \"Yale AI Club requested 20 CC-HOOD-NAVY hoodies, size M, with a bulk discount. Inventory found 8 units in stock, leaving a 12-unit shortfall. Purchase order #1 for 12 units from Bulldog Print Co, totaling $264.00, with expected arrival 2026-09-05, is pending human approval under approval #1. Approve or reject that restock request; the order is not placed until approved. No discount amount or target price was provided, so no discount approval was requested and no discount is confirmed. Customer message draft ... (1029 chars)"
+        },
+        {
+          "seq": 32,
+          "t": 117.0,
+          "run_id": "20261013T203451-5b00a4",
+          "ticket_id": 103,
+          "agent": "boss",
+          "depth": 0,
+          "kind": "final",
+          "output": {
+            "ticket_id": 103,
+            "understanding": "Yale AI Club asks to buy 20 CC-HOOD-NAVY hoodies, size M, and requests a bulk discount. There is no specific discount amount or target price in the request. Stock is short, and a restock purchase order is awaiting human approval.",
+            "assignments": [
+              {
+                "agent": "inventory",
+                "task": "Check stock for 20 CC-HOOD-NAVY hoodies, size M, and address the 12-unit shortfall by identifying a vendor and coordinating the restock purchase order.",
+                "why": "Inventory can check SKU/size stock, find restock vendors and arrival timing; for restocks it coordinates with Accounting to queue the PO for human approval."
+              },
+              {
+                "agent": "accounting",
+                "task": "Coordinate on the restock purchase order for ticket 103; the resulting PO and approval are pending. Cash-position information received through the inventory hand-off needs reconciliation before approval.",
+                "why": "Accounting prepares purchase orders for human approval and checks cash position. The cash warning relayed through Inventory conflicts with the balance shown in approval #1."
+              },
+              {
+                "agent": "customer_service",
+                "task": "Draft a customer reply stating verified stock and approval-dependent arrival facts, without promising an unspecified discount, and ask whether the club wants follow-up once terms are confirmed.",
+                "why": "Customer service drafts messages to customers and student groups."
+              }
+            ],
+            "lead_agent": "accounting",
+            "agents_consulted": [
+              "inventory",
+              "accounting",
+              "customer_service"
+            ],
+            "final_status": "waiting_on_human",
+            "decision": "Inventory found 8 units available, leaving a shortfall of 12. Purchase order #1 for 12 units from Bulldog Print Co, totaling $264.00 with expected arrival 2026-09-05, is pending human approval under approval #1; the goods are not yet ordered. No discount approval was requested because the customer did not specify a discount amount or target price, and no discount is confirmed. Customer message draft #1 is saved but must be sent by a human. Before approving the PO, reconcile the cash warning relayed by Inventory (\u2212$104.00 after the PO and listed obligations) with approval #1, which records a checking balance of $3,400.00 and $3,400.00 after pending payments.",
+            "pending_approvals": [
+              "Approval #1: purchase order #1 for 12 CC-HOOD-NAVY hoodies, size M, totaling $264.00; reconcile the conflicting cash information before approving."
+            ],
+            "customer_message_ids": [
+              1
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "review": null
+}
