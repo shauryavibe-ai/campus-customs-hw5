@@ -579,3 +579,17 @@ Updated in the Reflection tab and `outputs/reflection.md`.
 - **Added:** a `.gitignore` (excludes `.venv/`, `node_modules/`, `frontend/dist/`, caches, any `.env`, `data/runs/`, `data/backups/`, the original data zip) and a top-level `README.md` (what it is, the folders, how to run it, safety in brief).
 - **Checked before pushing:** the API key appears in none of the 91 committed files (the key lives in the parent folder's `.env`, outside the repo).
 - **Pushed:** one commit, `4780c85`.
+
+## Prompt 2
+> What is not in the repo
+
+**Response:** Listed everything left out of the repo:
+- **Ignored inside `hw 5/`:** `.venv/` (176 MB), `frontend/node_modules/` (65 MB), `frontend/dist/`, the Python caches, `.pytest_cache/`, `.DS_Store`, `data/runs/` (9 scratch run databases), `data/backups/` (reset backups) and `data (2).zip` (the original course zip).
+- **Outside the repo folder entirely:** the root `.env` (API key), `AGENTS.md`, `.mcp.json` and `.claude/`.
+
+This log entry is local only until the next push.
+
+## Prompt 3
+> Put the agents.md and .mcp.json as well
+
+**Response:** Copied `AGENTS.md` (project rules: API key handling, the `gpt-6-luna` model, the web-design rules and the Campus Customs colour exceptions) and `.mcp.json` (identical to `mcp.json`) from the parent folder into the repo root. Checked that neither contains a key or token. Committed and pushed both, together with the prompt-log entries for Problem 11 prompts 2–3. Note: these are copies; the originals in the parent folder remain the ones Claude Code reads, so future edits there need copying again.
