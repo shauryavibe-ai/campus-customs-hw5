@@ -593,3 +593,8 @@ This log entry is local only until the next push.
 > Put the agents.md and .mcp.json as well
 
 **Response:** Copied `AGENTS.md` (project rules: API key handling, the `gpt-6-luna` model, the web-design rules and the Campus Customs colour exceptions) and `.mcp.json` (identical to `mcp.json`) from the parent folder into the repo root. Checked that neither contains a key or token. Committed and pushed both, together with the prompt-log entries for Problem 11 prompts 2–3. Note: these are copies; the originals in the parent folder remain the ones Claude Code reads, so future edits there need copying again.
+
+## Prompt 4
+> AI_prompts.md as well
+
+**Response:** `AI_prompts.md` was already in the repo. Committed and pushed it again so the GitHub copy includes this latest prompt, then confirmed GitHub's copy matches the local file.
